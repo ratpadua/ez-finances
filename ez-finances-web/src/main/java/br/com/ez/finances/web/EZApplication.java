@@ -1,4 +1,4 @@
-package br.com.ez.app;
+package br.com.ez.finances.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

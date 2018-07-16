@@ -1,19 +1,15 @@
-package br.com.ez.app.web.v1.controller;
+package br.com.ez.finances.api.v1;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by raul.padua on 16/07/18
  */
-@RestController
-public class HelloWorldController {
+public interface IHelloWorldController {
 
     @GetMapping(path = "/v1/hello")
     @ResponseStatus(HttpStatus.OK)
-    public String getCatalog() {
-        return "Hello V1";
-    }
+    String getCatalog();
 }

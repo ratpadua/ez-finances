@@ -5,19 +5,19 @@
     <parent>
         <groupId>br.com.ez.finances</groupId>
         <artifactId>ez-finances</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.ez.finances.app</groupId>
-    <artifactId>ez-finances-app</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>ez-finances-web</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ez-finances-app</name>
+    <name>ez-finances-web</name>
 
     <dependencies>
+        <!-- Spring Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -38,6 +38,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- Module Dependencies -->
+        <dependency>
+            <groupId>br.com.ez.finances</groupId>
+            <artifactId>ez-finances-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
