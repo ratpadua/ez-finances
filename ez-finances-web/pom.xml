@@ -34,15 +34,15 @@
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
         <!-- Module Dependencies -->
         <dependency>
             <groupId>br.com.ez.finances</groupId>
             <artifactId>ez-finances-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>br.com.ez.finances</groupId>
+            <artifactId>ez-finances-service</artifactId>
         </dependency>
 
     </dependencies>

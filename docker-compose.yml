@@ -1,0 +1,20 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ez_finances
+      - POSTGRES_USER=ez_finances
+      - POSTGRES_PASSWORD=ez_finances
+    networks:
+      - compose_ez-postgres
+
+networks:
+  compose_ez-postgres:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.68.64.1/24

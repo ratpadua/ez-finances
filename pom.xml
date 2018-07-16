@@ -9,6 +9,8 @@
     <modules>
         <module>ez-finances-api</module>
         <module>ez-finances-web</module>
+        <module>ez-finances-service</module>
+        <module>ez-finances-infrastructure</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -23,9 +25,10 @@
     </parent>
 
     <properties>
+        <liquibase.version>3.6.2</liquibase.version>
+        <postgresql.version>42.2.3</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jackson.version>2.9.2</jackson.version>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
     </properties>
@@ -39,12 +42,31 @@
                 <version>${project.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>br.com.ez.finances</groupId>
+                <artifactId>ez-finances-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>br.com.ez.finances</groupId>
+                <artifactId>ez-finances-infrastructure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- Database -->
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <scope>runtime</scope>
+                <version>${postgresql.version}</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

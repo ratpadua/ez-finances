@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="raul.padua" id="01_create_tables">
+        <sql>
+            CREATE TABLE IF NOT EXISTS profile (
+            id            BIGSERIAL PRIMARY KEY NOT NULL,
+            name          VARCHAR(50)           NOT NULL
+            );
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
