@@ -11,6 +11,7 @@
         <module>ez-finances-web</module>
         <module>ez-finances-service</module>
         <module>ez-finances-infrastructure</module>
+        <module>ez-finances-domain</module>
     </modules>
     <packaging>pom</packaging>
 

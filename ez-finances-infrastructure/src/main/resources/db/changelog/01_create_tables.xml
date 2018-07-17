@@ -5,7 +5,24 @@
         <sql>
             CREATE TABLE IF NOT EXISTS profile (
             id            BIGSERIAL PRIMARY KEY NOT NULL,
-            name          VARCHAR(50)           NOT NULL
+            name          VARCHAR(50) UNIQUE    NOT NULL,
+            balance       DECIMAL(12,2)         NOT NULL,
+            status        VARCHAR(20)           NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS account (
+            id            BIGSERIAL PRIMARY KEY NOT NULL,
+            profile_id    VARCHAR(50) UNIQUE    NOT NULL,
+            description   DECIMAL(12,2)         NOT NULL,
+            type          VARCHAR(20)           NOT NULL,
+            balance       DECIMAL(12,2)         NOT NULL,
+            input_date    TIMESTAMP             NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS translation (
+            id            BIGSERIAL PRIMARY KEY NOT NULL,
+            from          VARCHAR(50) UNIQUE    NOT NULL,
+            to            DECIMAL(12,2)         NOT NULL
             );
 
         </sql>
