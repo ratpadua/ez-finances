@@ -4,25 +4,36 @@
     <changeSet author="raul.padua" id="01_create_tables">
         <sql>
             CREATE TABLE IF NOT EXISTS profile (
-            id            BIGSERIAL PRIMARY KEY NOT NULL,
+            id            BIGINT PRIMARY KEY    NOT NULL,
             name          VARCHAR(50) UNIQUE    NOT NULL,
             balance       DECIMAL(12,2)         NOT NULL,
             status        VARCHAR(20)           NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS account (
-            id            BIGSERIAL PRIMARY KEY NOT NULL,
-            profile_id    VARCHAR(50) UNIQUE    NOT NULL,
-            description   DECIMAL(12,2)         NOT NULL,
-            type          VARCHAR(20)           NOT NULL,
-            balance       DECIMAL(12,2)         NOT NULL,
-            input_date    TIMESTAMP             NOT NULL
+            CREATE TABLE IF NOT EXISTS translation (
+            id            BIGINT PRIMARY KEY NOT NULL,
+            from          VARCHAR(255)       NOT NULL,
+            to            VARCHAR(255)       NOT NULL,
+            status        VARCHAR(20)        NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS translation (
-            id            BIGSERIAL PRIMARY KEY NOT NULL,
-            from          VARCHAR(50) UNIQUE    NOT NULL,
-            to            DECIMAL(12,2)         NOT NULL
+            CREATE TABLE IF NOT EXISTS type (
+            id            BIGINT PRIMARY KEY NOT NULL,
+            name          VARCHAR(50)       NOT NULL,
+            status        VARCHAR(20)        NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS account (
+            id              BIGINT PRIMARY KEY    NOT NULL,
+            profile_id      BIGINT                NOT NULL,
+            translation_id  BIGINT,
+            description     VARCHAR(255)          NOT NULL,
+            type_id         BIGINT                NOT NULL,
+            balance         DECIMAL(12,2)         NOT NULL,
+            input_date      TIMESTAMP             NOT NULL,
+
+            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES profile (id),
+            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES translation (id)
             );
 
         </sql>
