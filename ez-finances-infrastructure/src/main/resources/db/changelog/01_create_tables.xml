@@ -3,37 +3,38 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="raul.padua" id="01_create_tables">
         <sql>
-            CREATE TABLE IF NOT EXISTS profile (
-            id            BIGINT PRIMARY KEY    NOT NULL,
-            name          VARCHAR(50) UNIQUE    NOT NULL,
-            balance       DECIMAL(12,2)         NOT NULL,
-            status        VARCHAR(20)           NOT NULL
+            CREATE TABLE IF NOT EXISTS ez_schema.profile (
+            id            BIGSERIAL PRIMARY KEY     NOT NULL,
+            name          VARCHAR(50) UNIQUE        NOT NULL,
+            balance       DECIMAL(12,2)             NOT NULL,
+            status        VARCHAR(20)               NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS translation (
-            id            BIGINT PRIMARY KEY NOT NULL,
-            from          VARCHAR(255)       NOT NULL,
-            to            VARCHAR(255)       NOT NULL,
-            status        VARCHAR(20)        NOT NULL
+            CREATE TABLE IF NOT EXISTS ez_schema.translation (
+            id                  BIGSERIAL PRIMARY KEY   NOT NULL,
+            from_description    VARCHAR(255)            NOT NULL,
+            to_description      VARCHAR(255)            NOT NULL,
+            status              VARCHAR(20)             NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS type (
-            id            BIGINT PRIMARY KEY NOT NULL,
-            name          VARCHAR(50)       NOT NULL,
-            status        VARCHAR(20)        NOT NULL
+            CREATE TABLE IF NOT EXISTS ez_schema.type (
+            id            BIGSERIAL PRIMARY KEY     NOT NULL,
+            name          VARCHAR(50)               NOT NULL,
+            status        VARCHAR(20)               NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS account (
-            id              BIGINT PRIMARY KEY    NOT NULL,
-            profile_id      BIGINT                NOT NULL,
+            CREATE TABLE IF NOT EXISTS ez_schema.account (
+            id              BIGSERIAL PRIMARY KEY   NOT NULL,
+            profile_id      BIGINT                  NOT NULL,
             translation_id  BIGINT,
-            description     VARCHAR(255)          NOT NULL,
-            type_id         BIGINT                NOT NULL,
-            balance         DECIMAL(12,2)         NOT NULL,
-            input_date      TIMESTAMP             NOT NULL,
+            description     VARCHAR(255)            NOT NULL,
+            type_id         BIGINT                  NOT NULL,
+            balance         DECIMAL(12,2)           NOT NULL,
+            input_date      TIMESTAMP               NOT NULL,
 
-            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES profile (id),
-            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES translation (id)
+            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES ez_schema.profile (id),
+            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES ez_schema.translation (id),
+            CONSTRAINT fk_type FOREIGN KEY (type_id) REFERENCES ez_schema.type (id)
             );
 
         </sql>

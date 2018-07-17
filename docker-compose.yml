@@ -5,9 +5,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_DB=ez_finances
-      - POSTGRES_USER=ez_finances
-      - POSTGRES_PASSWORD=ez_finances
+      - POSTGRES_DB=ez_db
+      - POSTGRES_USER=ez_user
+      - POSTGRES_PASSWORD=ez_pw
+    volumes:
+      - ./docker-compose-database-config.sql:/docker-entrypoint-initdb.d/setup.sql
     networks:
       - compose_ez-postgres
 

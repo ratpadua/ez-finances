@@ -27,10 +27,10 @@ public class Translation {
     @Column(name = "ID")
     private Long id;
 
-    @Column(name = "FROM")
+    @Column(name = "FROM_DESCRIPTION")
     private String from;
 
-    @Column(name = "TO")
+    @Column(name = "TO_DESCRIPTION")
     private String to;
 
     @Column(name = "STATUS")

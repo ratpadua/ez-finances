@@ -18,10 +18,22 @@
     <name>ez-finances-api</name>
 
     <dependencies>
-        <!-- Spring -->
+        <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <!-- Module dependencies -->
+        <dependency>
+            <groupId>br.com.ez.finances</groupId>
+            <artifactId>ez-finances-domain</artifactId>
+        </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
 
     </dependencies>

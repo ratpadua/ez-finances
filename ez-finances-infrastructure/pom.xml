@@ -22,6 +22,12 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
+        <!-- Module Dependencies -->
+        <dependency>
+            <groupId>br.com.ez.finances</groupId>
+            <artifactId>ez-finances-domain</artifactId>
+        </dependency>
+
         <!-- Database -->
         <dependency>
             <groupId>org.hibernate</groupId>

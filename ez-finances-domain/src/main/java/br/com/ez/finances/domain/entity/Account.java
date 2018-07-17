@@ -22,12 +22,12 @@ import br.com.ez.finances.domain.enums.Status;
  * Created by raul.padua on 17/07/18
  */
 @Entity
-@Table(name = "PROFILE")
-@SequenceGenerator(name = "PROFILE_ID_SEQ", sequenceName = "PROFILE_ID_SEQ")
+@Table(name = "ACCOUNT")
+@SequenceGenerator(name = "ACCOUNT_ID_SEQ", sequenceName = "ACCOUNT_ID_SEQ")
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROFILE_ID_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCOUNT_ID_SEQ")
     @Column(name = "ID")
     private Long id;
 
@@ -42,7 +42,8 @@ public class Account {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "TYPE_ID")
+    @ManyToOne
+    @JoinColumn(name = "TYPE_ID")
     private Type type;
 
     @Column(name = "BALANCE")
