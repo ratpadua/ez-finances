@@ -16,12 +16,6 @@
     <name>ez-finances-infrastructure</name>
 
     <dependencies>
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <!-- Module Dependencies -->
         <dependency>
             <groupId>br.com.ez.finances</groupId>

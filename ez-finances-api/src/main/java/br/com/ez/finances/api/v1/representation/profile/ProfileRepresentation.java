@@ -7,10 +7,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
- * Created by raul.padua on 17/07/18
+ * Rest response profile representation. Any null values are not included in the JSON.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfileRepresentation {
+
     private Long id;
 
     private String name;

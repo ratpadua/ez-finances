@@ -18,12 +18,6 @@
     <name>ez-finances-service</name>
 
     <dependencies>
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
         <!-- Module Dependencies -->
         <dependency>
             <groupId>br.com.ez.finances</groupId>

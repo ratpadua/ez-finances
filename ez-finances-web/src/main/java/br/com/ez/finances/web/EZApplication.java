@@ -8,7 +8,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * Created by raul.padua on 16/07/18
+ * EZ Finances application. Uses Spring Boot with Undertow Server, auto configured by the spring framework. Scans
+ * components, entities and enable JPA repositories within the packages br.com.ez.finances.
  */
 @SpringBootApplication
 @EnableAutoConfiguration

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
- * Created by raul.padua on 17/07/18
+ * Account entity with the table name, mapped columns and the ID sequence generator.
  */
 @Entity
 @Table(name = "ACCOUNT")

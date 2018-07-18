@@ -13,9 +13,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.form.profile.CreateProfile;
 
 /**
- * Created by raul.padua on 17/07/18
+ * Profile entity with the table name, mapped columns and the ID sequence generator.
  */
 @Entity
 @Table(name = "PROFILE")
@@ -67,5 +68,19 @@ public class Profile {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public static Profile of(CreateProfile createProfile) {
+        Profile profile = new Profile();
+        profile.setName(createProfile.getName());
+
+        if (createProfile.getBalance().isPresent()) {
+            profile.setBalance(createProfile.getBalance().get());
+        } else {
+            profile.setBalance(BigDecimal.ZERO);
+        }
+
+        profile.setStatus(Status.ACTIVE);
+        return profile;
     }
 }

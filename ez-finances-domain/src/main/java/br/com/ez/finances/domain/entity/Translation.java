@@ -1,7 +1,5 @@
 package br.com.ez.finances.domain.entity;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +13,7 @@ import javax.persistence.Table;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
- * Created by raul.padua on 17/07/18
+ * Translation entity with the table name, mapped columns and the ID sequence generator.
  */
 @Entity
 @Table(name = "TRANSLATION")
