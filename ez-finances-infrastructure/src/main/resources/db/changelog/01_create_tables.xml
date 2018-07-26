@@ -12,7 +12,7 @@
 
             CREATE TABLE IF NOT EXISTS ez_schema.translation (
             id                  BIGSERIAL PRIMARY KEY   NOT NULL,
-            from_description    VARCHAR(255)            NOT NULL,
+            description         VARCHAR(255)            NOT NULL,
             to_description      VARCHAR(255)            NOT NULL,
             status              VARCHAR(20)             NOT NULL
             );

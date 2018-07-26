@@ -15,6 +15,7 @@ public interface ProfileMapper {
 
     /**
      * Converts the Profile entity into a rest response representation of it.
+     *
      * @param profile The profile entity.
      * @return A rest response representation of a profile.
      */
@@ -22,6 +23,7 @@ public interface ProfileMapper {
 
     /**
      * Converts a list of Profile entities into a rest response representation list of it.
+     *
      * @param profiles The profile entities.
      * @return A rest response representation of a list of profiles.
      */
