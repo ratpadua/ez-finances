@@ -28,12 +28,14 @@ public interface ISourceController {
     /**
      * Searches all sources with the provided statuses, if none is provided, all sources are searched.
      *
+     * @param profileId Mandatory request parameter with the profile id.
      * @param statuses Optional request parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the sources found.
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<SourceRepresentation> getSources(@RequestParam(required = false) Status... statuses);
+    List<SourceRepresentation> getSources(@RequestParam Long profileId,
+            @RequestParam(required = false) Status... statuses);
 
     /**
      * Searches the source with the provided id.

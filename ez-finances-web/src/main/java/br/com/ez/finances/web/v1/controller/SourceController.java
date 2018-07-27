@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ez.finances.api.v1.ISourceController;
 import br.com.ez.finances.api.v1.representation.source.SourceRepresentation;
 import br.com.ez.finances.domain.enums.Status;
-import br.com.ez.finances.domain.form.profile.CreateProfile;
-import br.com.ez.finances.domain.form.profile.UpdateProfile;
 import br.com.ez.finances.domain.form.source.CreateSource;
 import br.com.ez.finances.domain.form.source.UpdateSource;
 import br.com.ez.finances.service.v1.ISourceService;
@@ -37,8 +35,9 @@ public class SourceController implements ISourceController {
     }
 
     @Override
-    public List<SourceRepresentation> getSources(@RequestParam(required = false) Status... statuses) {
-        return mapper.toSourceRepresentation(sourceService.getSources(statuses));
+    public List<SourceRepresentation> getSources(@RequestParam Long profileId,
+            @RequestParam(required = false) Status... statuses) {
+        return mapper.toSourceRepresentation(sourceService.getSources(profileId, statuses));
     }
 
     @Override

@@ -4,6 +4,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +22,15 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ControllerAdvice
 @ResponseBody
 public class EZExceptionHandler {
+
+    @ExceptionHandler({MissingServletRequestParameterException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorRepresentation missingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_004.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_004.getKey()),
+                ex.getMessage());
+    }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

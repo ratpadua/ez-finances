@@ -15,10 +15,11 @@ public interface ISourceService {
     /**
      * Searches all sources with the provided statuses, if none is provided, all sources are searched.
      *
+     * @param profileId Mandatory parameter with the profile id.
      * @param statuses Optional parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the sources found.
      */
-    List<Source> getSources(Status... statuses);
+    List<Source> getSources(Long profileId, Status... statuses);
 
     /**
      * Searches the source with the provided id.

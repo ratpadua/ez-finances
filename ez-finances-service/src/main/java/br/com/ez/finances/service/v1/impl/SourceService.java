@@ -1,6 +1,7 @@
 package br.com.ez.finances.service.v1.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.ez.finances.domain.entity.Profile;
 import br.com.ez.finances.domain.entity.Source;
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.source.CreateSource;
 import br.com.ez.finances.domain.form.source.UpdateSource;
 import br.com.ez.finances.infrastructure.repository.SourceRepository;
@@ -31,14 +33,18 @@ public class SourceService implements ISourceService {
     }
 
     @Override
-    public List<Source> getSources(Status... statuses) {
+    public List<Source> getSources(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
-        return sourceRepository.findByStatusInOrderByName(statuses);
+        return sourceRepository.findByProfileIdEqualsAndStatusInOrderByName(profileId, statuses);
     }
 
     @Override
     public Source searchSource(Long id) {
-        return sourceRepository.getOne(id);
+        Optional<Source> optSource = sourceRepository.findById(id);
+
+        if (!optSource.isPresent()) throw new RuntimeException(ErrorCode.ERR_700.getCode());
+
+        return optSource.get();
     }
 
     @Override
@@ -49,7 +55,11 @@ public class SourceService implements ISourceService {
 
     @Override
     public Source updateSource(Long id, UpdateSource updateSource) {
-        Source source = sourceRepository.getOne(id);
+        Optional<Source> optSource = sourceRepository.findById(id);
+
+        if (!optSource.isPresent()) throw new RuntimeException(ErrorCode.ERR_700.getCode());
+
+        Source source = optSource.get();
 
         updateSource.getName().ifPresent(source::setName);
         updateSource.getStatus().ifPresent(source::setStatus);

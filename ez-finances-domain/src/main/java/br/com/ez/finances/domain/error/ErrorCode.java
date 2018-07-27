@@ -30,6 +30,7 @@ public class ErrorCode {
     public static final ErrorCode ERR_001 = new ErrorCode("ERR_001", "internal.server.error");
     public static final ErrorCode ERR_002 = new ErrorCode("ERR_002", "entity.not.found");
     public static final ErrorCode ERR_003 = new ErrorCode("ERR_003", "invalid.format");
+    public static final ErrorCode ERR_004 = new ErrorCode("ERR_004", "missing.parameter");
 
     //Profile Errors - ERR_600 to ERR_699
     public static final ErrorCode ERR_600 = new ErrorCode("ERR_600", "profile.not.found");

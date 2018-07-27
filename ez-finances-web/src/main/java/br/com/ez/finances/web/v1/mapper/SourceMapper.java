@@ -10,7 +10,7 @@ import br.com.ez.finances.domain.entity.Source;
 /**
  * Profile related mapper utility. Uses Mapstruct Framework to generate implementation.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProfileMapper.class})
 public interface SourceMapper {
 
     /**
