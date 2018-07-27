@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ez.finances.domain.enums.TransactionType;
+import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 
 /**
  * Transaction entity with the table name, mapped columns and the ID sequence generator.
@@ -31,20 +32,16 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "PROFILE_ID")
-    private Profile profile;
+    @JoinColumn(name = "SOURCE_ID")
+    private Source source;
 
     @ManyToOne
     @JoinColumn(name = "TRANSLATION_ID")
     private Translation translation;
 
-    @ManyToOne
-    @JoinColumn(name = "SOURCE_ID")
-    private Source source;
-
-    @Column(name = "STATUS")
+    @Column(name = "TYPE")
     @Enumerated(EnumType.STRING)
-    private TransactionType status;
+    private TransactionType type;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -63,12 +60,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Source getSource() {
+        return source;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public Translation getTranslation() {
@@ -79,21 +76,12 @@ public class Transaction {
         this.translation = translation;
     }
 
-
-    public Source getSource() {
-        return source;
+    public TransactionType getType() {
+        return type;
     }
 
-    public void setSource(Source source) {
-        this.source = source;
-    }
-
-    public TransactionType getStatus() {
-        return status;
-    }
-
-    public void setStatus(TransactionType status) {
-        this.status = status;
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -118,5 +106,21 @@ public class Transaction {
 
     public void setInputDate(ZonedDateTime inputDate) {
         this.inputDate = inputDate;
+    }
+
+    public static Transaction of(CreateTransaction createTransaction, Source source, Translation translation) {
+        Transaction transaction = new Transaction();
+        transaction.setSource(source);
+        transaction.setType(createTransaction.getType());
+        transaction.setDescription(createTransaction.getDescription());
+        transaction.setBalance(createTransaction.getBalance());
+        transaction.setInputDate(createTransaction.getInputDate());
+
+        if (translation != null) {
+            transaction.setDescription(translation.getToDescription());
+            transaction.setTranslation(translation);
+        }
+
+        return transaction;
     }
 }

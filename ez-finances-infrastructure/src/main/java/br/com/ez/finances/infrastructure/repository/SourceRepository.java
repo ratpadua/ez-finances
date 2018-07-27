@@ -2,7 +2,6 @@ package br.com.ez.finances.infrastructure.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import br.com.ez.finances.domain.entity.Source;
