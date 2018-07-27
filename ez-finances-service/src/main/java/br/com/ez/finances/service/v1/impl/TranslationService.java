@@ -1,6 +1,7 @@
 package br.com.ez.finances.service.v1.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.com.ez.finances.domain.entity.Source;
 import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.translation.CreateTranslation;
 import br.com.ez.finances.domain.form.translation.UpdateTranslation;
 import br.com.ez.finances.infrastructure.repository.TranslationRepository;
@@ -49,7 +51,11 @@ public class TranslationService implements ITranslationService {
 
     @Override
     public Translation updateTranslation(Long id, UpdateTranslation updateTranslation) {
-        Translation translation = translationRepository.getOne(id);
+        Optional<Translation> optTranslation = translationRepository.findById(id);
+
+        if (!optTranslation.isPresent()) throw new RuntimeException(ErrorCode.ERR_800.getCode());
+
+        Translation translation = optTranslation.get();
 
         updateTranslation.getToDescription().ifPresent(translation::setToDescription);
         updateTranslation.getStatus().ifPresent(translation::setStatus);

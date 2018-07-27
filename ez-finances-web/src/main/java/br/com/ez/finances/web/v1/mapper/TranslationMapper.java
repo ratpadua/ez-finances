@@ -12,7 +12,7 @@ import br.com.ez.finances.domain.entity.Translation;
 /**
  * Translation related mapper utility. Uses Mapstruct Framework to generate implementation.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SourceMapper.class})
 public interface TranslationMapper {
 
     /**

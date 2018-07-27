@@ -2,6 +2,7 @@ package br.com.ez.finances.api.v1.representation.translation;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import br.com.ez.finances.api.v1.representation.source.SourceRepresentation;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
@@ -11,6 +12,8 @@ import br.com.ez.finances.domain.enums.Status;
 public class TranslationRepresentation {
 
     private Long id;
+
+    private SourceRepresentation source;
 
     private String description;
 
@@ -24,6 +27,14 @@ public class TranslationRepresentation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public SourceRepresentation getSource() {
+        return source;
+    }
+
+    public void setSource(SourceRepresentation source) {
+        this.source = source;
     }
 
     public String getDescription() {

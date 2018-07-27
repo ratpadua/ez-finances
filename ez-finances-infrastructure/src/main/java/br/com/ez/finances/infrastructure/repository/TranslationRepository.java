@@ -3,6 +3,7 @@ package br.com.ez.finances.infrastructure.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.enums.Status;
@@ -10,7 +11,7 @@ import br.com.ez.finances.domain.enums.Status;
 /**
  * JPA Repository for the translation related operations.
  */
-public interface TranslationRepository extends JpaRepository<Translation, Long> {
+public interface TranslationRepository extends CrudRepository<Translation, Long> {
 
     /**
      * Searches all translations with the provided statuses and orders them by description.
