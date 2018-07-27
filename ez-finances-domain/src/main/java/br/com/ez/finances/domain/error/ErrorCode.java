@@ -28,6 +28,8 @@ public class ErrorCode {
 
     //System Errors - ERR_001 to ERR_099
     public static final ErrorCode ERR_001 = new ErrorCode("ERR_001", "internal.server.error");
+    public static final ErrorCode ERR_002 = new ErrorCode("ERR_002", "entity.not.found");
+    public static final ErrorCode ERR_003 = new ErrorCode("ERR_003", "invalid.format");
 
     //Profile Errors - ERR_600 to ERR_699
 

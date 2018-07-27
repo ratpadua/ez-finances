@@ -12,13 +12,16 @@ public class ErrorRepresentation {
 
     private String message;
 
-    private ErrorRepresentation(String code, String message) {
+    private String exceptionMessage;
+
+    private ErrorRepresentation(String code, String message, String exceptionMessage) {
         this.code = code;
         this.message = message;
+        this.exceptionMessage = exceptionMessage;
     }
 
-    public static ErrorRepresentation of(String code, String message) {
-        return new ErrorRepresentation(code, message);
+    public static ErrorRepresentation of(String code, String message, String exceptionMessage) {
+        return new ErrorRepresentation(code, message, exceptionMessage);
     }
 
     public String getCode() {
@@ -27,5 +30,9 @@ public class ErrorRepresentation {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getExceptionMessage() {
+        return exceptionMessage;
     }
 }
