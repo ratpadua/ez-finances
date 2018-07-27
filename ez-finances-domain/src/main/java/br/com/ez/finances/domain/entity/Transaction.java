@@ -1,7 +1,6 @@
 package br.com.ez.finances.domain.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import javax.persistence.Column;
@@ -16,18 +15,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.enums.TransactionType;
 
 /**
- * Account entity with the table name, mapped columns and the ID sequence generator.
+ * Transaction entity with the table name, mapped columns and the ID sequence generator.
  */
 @Entity
-@Table(name = "ACCOUNT")
-@SequenceGenerator(name = "ACCOUNT_ID_SEQ", sequenceName = "ACCOUNT_ID_SEQ")
-public class Account {
+@Table(name = "TRANSACTION")
+@SequenceGenerator(name = "TRANSACTION_ID_SEQ", sequenceName = "TRANSACTION_ID_SEQ")
+public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACCOUNT_ID_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TRANSACTION_ID_SEQ")
     @Column(name = "ID")
     private Long id;
 
@@ -39,12 +38,16 @@ public class Account {
     @JoinColumn(name = "TRANSLATION_ID")
     private Translation translation;
 
+    @ManyToOne
+    @JoinColumn(name = "SOURCE_ID")
+    private Source source;
+
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private TransactionType status;
+
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "TYPE_ID")
-    private Type type;
 
     @Column(name = "BALANCE")
     private BigDecimal balance;
@@ -76,20 +79,29 @@ public class Account {
         this.translation = translation;
     }
 
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    public TransactionType getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionType status) {
+        this.status = status;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public BigDecimal getBalance() {

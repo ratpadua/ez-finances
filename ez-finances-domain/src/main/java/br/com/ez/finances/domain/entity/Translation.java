@@ -7,6 +7,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -26,6 +28,10 @@ public class Translation {
     @Column(name = "ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "SOURCE_ID")
+    private Source source;
+
     @Column(name = "DESCRIPTION")
     private String description;
 
@@ -42,6 +48,14 @@ public class Translation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
     }
 
     public String getDescription() {
@@ -68,8 +82,9 @@ public class Translation {
         this.status = status;
     }
 
-    public static Translation of(CreateTranslation createTranslation) {
+    public static Translation of(CreateTranslation createTranslation, Source source) {
         Translation translation = new Translation();
+        translation.setSource(source);
         translation.setDescription(createTranslation.getDescription());
         translation.setToDescription(createTranslation.getToDescription());
         translation.setStatus(Status.ACTIVE);

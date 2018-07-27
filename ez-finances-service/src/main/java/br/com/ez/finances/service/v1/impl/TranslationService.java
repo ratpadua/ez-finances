@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ez.finances.domain.entity.Source;
 import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.enums.Status;
 import br.com.ez.finances.domain.form.translation.CreateTranslation;
-import br.com.ez.finances.domain.form.translation.SearchTranslation;
 import br.com.ez.finances.domain.form.translation.UpdateTranslation;
 import br.com.ez.finances.infrastructure.repository.TranslationRepository;
+import br.com.ez.finances.service.v1.ISourceService;
 import br.com.ez.finances.service.v1.ITranslationService;
 
 /**
@@ -21,9 +22,12 @@ public class TranslationService implements ITranslationService {
 
     private TranslationRepository translationRepository;
 
+    private ISourceService sourceService;
+
     @Autowired
-    public TranslationService(TranslationRepository translationRepository) {
+    public TranslationService(TranslationRepository translationRepository, ISourceService sourceService) {
         this.translationRepository = translationRepository;
+        this.sourceService = sourceService;
     }
 
     @Override
@@ -39,7 +43,8 @@ public class TranslationService implements ITranslationService {
 
     @Override
     public Translation createTranslation(CreateTranslation createTranslation) {
-        return translationRepository.save(Translation.of(createTranslation));
+        Source source = sourceService.searchSource(createTranslation.getSourceId());
+        return translationRepository.save(Translation.of(createTranslation, source));
     }
 
     @Override
@@ -48,6 +53,10 @@ public class TranslationService implements ITranslationService {
 
         updateTranslation.getToDescription().ifPresent(translation::setToDescription);
         updateTranslation.getStatus().ifPresent(translation::setStatus);
+        updateTranslation.getSourceId().ifPresent(sourceId -> {
+            Source source = sourceService.searchSource(sourceId);
+            translation.setSource(source);
+        });
 
         return translationRepository.save(translation);
     }

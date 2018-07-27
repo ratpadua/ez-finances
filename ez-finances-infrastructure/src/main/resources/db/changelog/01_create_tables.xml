@@ -10,31 +10,36 @@
             status        VARCHAR(20)               NOT NULL
             );
 
+            CREATE TABLE IF NOT EXISTS ez_schema.source (
+            id            BIGSERIAL PRIMARY KEY     NOT NULL,
+            profile_id    BIGINT                    NOT NULL,
+            name          VARCHAR(50)               NOT NULL,
+            status        VARCHAR(20)               NOT NULL,
+
+            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES ez_schema.profile (id)
+            );
+
             CREATE TABLE IF NOT EXISTS ez_schema.translation (
             id                  BIGSERIAL PRIMARY KEY   NOT NULL,
+            source_id           BIGINT                  NOT NULL,
             description         VARCHAR(255)            NOT NULL,
             to_description      VARCHAR(255)            NOT NULL,
-            status              VARCHAR(20)             NOT NULL
+            status              VARCHAR(20)             NOT NULL,
+
+            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES ez_schema.source (id)
             );
 
-            CREATE TABLE IF NOT EXISTS ez_schema.type (
-            id            BIGSERIAL PRIMARY KEY     NOT NULL,
-            name          VARCHAR(50)               NOT NULL,
-            status        VARCHAR(20)               NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS ez_schema.account (
+            CREATE TABLE IF NOT EXISTS ez_schema.transaction (
             id              BIGSERIAL PRIMARY KEY   NOT NULL,
-            profile_id      BIGINT                  NOT NULL,
+            source_id       BIGINT                  NOT NULL,
             translation_id  BIGINT,
+            type            VARCHAR(20)             NOT NULL,
             description     VARCHAR(255)            NOT NULL,
-            type_id         BIGINT                  NOT NULL,
             balance         DECIMAL(12,2)           NOT NULL,
             input_date      TIMESTAMP               NOT NULL,
 
-            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES ez_schema.profile (id),
-            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES ez_schema.translation (id),
-            CONSTRAINT fk_type FOREIGN KEY (type_id) REFERENCES ez_schema.type (id)
+            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES ez_schema.source (id),
+            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES ez_schema.translation (id)
             );
 
         </sql>

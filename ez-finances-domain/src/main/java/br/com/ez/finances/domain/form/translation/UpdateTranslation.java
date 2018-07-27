@@ -16,6 +16,8 @@ public class UpdateTranslation {
 
     private Optional<Status> status;
 
+    private Optional<Long> sourceId;
+
     /**
      * Constructor with the mandatory fields, used by Spring/Jackson to create the object. Any non-mandatory fields are
      * set as Optional.empty and later set using the setter.
@@ -24,18 +26,22 @@ public class UpdateTranslation {
     private UpdateTranslation() {
         this.toDescription = Optional.empty();
         this.status = Optional.empty();
+        this.sourceId = Optional.empty();
     }
 
     /**
      * Static form builder requiring only the mandatory parameters.
      *
-     * @param toDescription Mandatory parameter translate to.
+     * @param toDescription Optional parameter translate to.
+     * @param status        Optional parameter status.
+     * @param sourceId      Optional parameter source id.
      * @return Update translation valid form.
      */
-    public static UpdateTranslation of(String toDescription, Status status) {
+    public static UpdateTranslation of(String toDescription, Status status, Long sourceId) {
         UpdateTranslation updateTranslation = new UpdateTranslation();
         updateTranslation.setToDescription(toDescription);
         updateTranslation.setStatus(status);
+        updateTranslation.setSourceId(sourceId);
 
         ObjectValidator.validate(updateTranslation);
 
@@ -56,5 +62,13 @@ public class UpdateTranslation {
 
     public void setStatus(Status status) {
         this.status = Optional.ofNullable(status);
+    }
+
+    public Optional<Long> getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = Optional.ofNullable(sourceId);
     }
 }

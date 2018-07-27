@@ -32,10 +32,14 @@ public class ErrorCode {
     public static final ErrorCode ERR_003 = new ErrorCode("ERR_003", "invalid.format");
 
     //Profile Errors - ERR_600 to ERR_699
+    public static final ErrorCode ERR_600 = new ErrorCode("ERR_600", "profile.not.found");
 
-    //Translation Errors - ERR_700 to ERR_799
+    //Source Errors - ERR_700 to ERR_799
+    public static final ErrorCode ERR_700 = new ErrorCode("ERR_700", "source.not.found");
 
-    //Type Errors - ERR_800 to ERR_899
+    //Translation Errors - ERR_800 to ERR_899
+    public static final ErrorCode ERR_800 = new ErrorCode("ERR_800", "translation.not.found");
 
-    //Type Errors - ERR_900 to ERR_999
+    //Transaction Errors - ERR_900 to ERR_999
+    public static final ErrorCode ERR_900 = new ErrorCode("ERR_900", "transaction.not.found");
 }
