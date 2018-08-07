@@ -5,5 +5,5 @@ package br.com.ez.finances.domain.enums;
  */
 public enum TransactionType {
     FIXED,
-    VARIABLE;
+    VARIABLE
 }

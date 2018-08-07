@@ -2,10 +2,11 @@ package br.com.ez.finances.domain.form.transaction;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,9 +32,8 @@ public class CreateTransaction {
     private BigDecimal balance;
 
     @NotNull
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private ZonedDateTime inputDate;
-
-    private Optional<Long> translationId;
 
     /**
      * Constructor with the mandatory fields, used by Spring/Jackson to create the object. Any non-mandatory fields are
@@ -56,7 +56,6 @@ public class CreateTransaction {
         this.description = description;
         this.balance = balance;
         this.inputDate = inputDate;
-        this.translationId = Optional.empty();
     }
 
     /**
@@ -72,27 +71,6 @@ public class CreateTransaction {
     public static CreateTransaction of(Long sourceId, TransactionType type, String description, BigDecimal balance,
             ZonedDateTime inputDate) {
         CreateTransaction createTransaction = new CreateTransaction(sourceId, type, description, balance, inputDate);
-
-        ObjectValidator.validate(createTransaction);
-
-        return createTransaction;
-    }
-
-    /**
-     * Static form builder requiring all parameters.
-     *
-     * @param sourceId      Mandatory parameter source id.
-     * @param type          Mandatory parameter transaction type.
-     * @param description   Mandatory parameter description.
-     * @param balance       Mandatory parameter balance change.
-     * @param inputDate     Mandatory parameter input date.
-     * @param translationId Optional parameter translation id.
-     * @return Create transaction valid form.
-     */
-    public static CreateTransaction of(Long sourceId, TransactionType type, String description, BigDecimal balance,
-            ZonedDateTime inputDate, Long translationId) {
-        CreateTransaction createTransaction = new CreateTransaction(sourceId, type, description, balance, inputDate);
-        createTransaction.setTranslationId(translationId);
 
         ObjectValidator.validate(createTransaction);
 
@@ -117,13 +95,5 @@ public class CreateTransaction {
 
     public ZonedDateTime getInputDate() {
         return inputDate;
-    }
-
-    public Optional<Long> getTranslationId() {
-        return translationId;
-    }
-
-    public void setTranslationId(Long translationId) {
-        this.translationId = Optional.ofNullable(translationId);
     }
 }

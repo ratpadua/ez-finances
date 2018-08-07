@@ -8,7 +8,7 @@ import br.com.ez.finances.domain.form.translation.CreateTranslation;
 import br.com.ez.finances.domain.form.translation.UpdateTranslation;
 
 /**
- * Interface containing Profile related operations.
+ * Interface containing Translation related operations.
  */
 public interface ITranslationService {
 
