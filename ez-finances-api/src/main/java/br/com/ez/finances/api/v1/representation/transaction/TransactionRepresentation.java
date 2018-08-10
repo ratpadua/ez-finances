@@ -1,7 +1,7 @@
 package br.com.ez.finances.api.v1.representation.transaction;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -27,7 +27,7 @@ public class TransactionRepresentation {
 
     private BigDecimal balance;
 
-    private ZonedDateTime inputDate;
+    private LocalDateTime inputDate;
 
     public Long getId() {
         return id;
@@ -77,11 +77,11 @@ public class TransactionRepresentation {
         this.balance = balance;
     }
 
-    public ZonedDateTime getInputDate() {
+    public LocalDateTime getInputDate() {
         return inputDate;
     }
 
-    public void setInputDate(ZonedDateTime inputDate) {
+    public void setInputDate(LocalDateTime inputDate) {
         this.inputDate = inputDate;
     }
 }

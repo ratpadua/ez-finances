@@ -1,7 +1,7 @@
 package br.com.ez.finances.domain.entity;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,7 +50,7 @@ public class Transaction {
     private BigDecimal balance;
 
     @Column(name = "INPUT_DATE")
-    private ZonedDateTime inputDate;
+    private LocalDateTime inputDate;
 
     public Long getId() {
         return id;
@@ -100,11 +100,11 @@ public class Transaction {
         this.balance = balance;
     }
 
-    public ZonedDateTime getInputDate() {
+    public LocalDateTime getInputDate() {
         return inputDate;
     }
 
-    public void setInputDate(ZonedDateTime inputDate) {
+    public void setInputDate(LocalDateTime inputDate) {
         this.inputDate = inputDate;
     }
 

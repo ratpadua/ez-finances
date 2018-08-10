@@ -1,7 +1,7 @@
 package br.com.ez.finances.domain.form.transaction;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -33,7 +33,7 @@ public class CreateTransaction {
 
     @NotNull
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private ZonedDateTime inputDate;
+    private LocalDateTime inputDate;
 
     /**
      * Constructor with the mandatory fields, used by Spring/Jackson to create the object. Any non-mandatory fields are
@@ -50,7 +50,7 @@ public class CreateTransaction {
             @JsonProperty("type") TransactionType type,
             @JsonProperty("description") String description,
             @JsonProperty("balance") BigDecimal balance,
-            @JsonProperty("inputDate") ZonedDateTime inputDate) {
+            @JsonProperty("inputDate") LocalDateTime inputDate) {
         this.sourceId = sourceId;
         this.type = type;
         this.description = description;
@@ -69,7 +69,7 @@ public class CreateTransaction {
      * @return Create transaction valid form.
      */
     public static CreateTransaction of(Long sourceId, TransactionType type, String description, BigDecimal balance,
-            ZonedDateTime inputDate) {
+            LocalDateTime inputDate) {
         CreateTransaction createTransaction = new CreateTransaction(sourceId, type, description, balance, inputDate);
 
         ObjectValidator.validate(createTransaction);
@@ -93,7 +93,7 @@ public class CreateTransaction {
         return balance;
     }
 
-    public ZonedDateTime getInputDate() {
+    public LocalDateTime getInputDate() {
         return inputDate;
     }
 }

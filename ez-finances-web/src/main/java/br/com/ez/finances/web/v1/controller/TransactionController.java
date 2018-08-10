@@ -1,5 +1,7 @@
 package br.com.ez.finances.web.v1.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +48,10 @@ public class TransactionController implements ITransactionController {
     public TransactionRepresentation updateTransaction(@PathVariable Long id,
             @RequestBody @Valid UpdateTransaction updateTransaction) {
         return mapper.toTransactionRepresentation(transactionService.updateTransaction(id, updateTransaction));
+    }
+
+    @Override
+    public List<TransactionRepresentation> uploadFile(String filePath) {
+        return mapper.fromTransactionDTO(transactionService.uploadFile(filePath));
     }
 }

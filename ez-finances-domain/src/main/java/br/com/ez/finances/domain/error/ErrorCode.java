@@ -43,4 +43,6 @@ public class ErrorCode {
 
     //Transaction Errors - ERR_900 to ERR_999
     public static final ErrorCode ERR_900 = new ErrorCode("ERR_900", "transaction.not.found");
+    public static final ErrorCode ERR_901 = new ErrorCode("ERR_901", "file.not.found");
+    public static final ErrorCode ERR_902 = new ErrorCode("ERR_902", "ofx.read.error");
 }

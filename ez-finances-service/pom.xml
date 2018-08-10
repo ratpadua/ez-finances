@@ -23,6 +23,12 @@
             <groupId>br.com.ez.finances</groupId>
             <artifactId>ez-finances-infrastructure</artifactId>
         </dependency>
+
+        <!-- Other dependencies -->
+        <dependency>
+            <groupId>com.webcohesion.ofx4j</groupId>
+            <artifactId>ofx4j</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

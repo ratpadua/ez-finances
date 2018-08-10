@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 
 import br.com.ez.finances.api.v1.representation.transaction.TransactionRepresentation;
 import br.com.ez.finances.api.v1.representation.translation.TranslationRepresentation;
+import br.com.ez.finances.domain.dto.TransactionDTO;
 import br.com.ez.finances.domain.entity.Transaction;
 import br.com.ez.finances.domain.entity.Translation;
 
@@ -45,4 +46,20 @@ public interface TransactionMapper {
         PageRequest pageRequest = PageRequest.of(transactions.getNumber(), transactions.getSize(), transactions.getSort());
         return new PageImpl<>(content, pageRequest, transactions.getTotalElements());
     }
+
+    /**
+     * Converts a transaction data transfer object into a rest response of it.
+     *
+     * @param transactionDTO The transaction dto.
+     * @return A rest response representation of a transaction.
+     */
+    TransactionRepresentation fromTransactionDTO(TransactionDTO transactionDTO);
+
+    /**
+     * Converts a list of transaction data transfer objects into a rest response of it.
+     *
+     * @param transactionDTO The transaction dto list.
+     * @return A rest response representation of a list of transactions.
+     */
+    List<TransactionRepresentation> fromTransactionDTO(List<TransactionDTO> transactionDTO);
 }

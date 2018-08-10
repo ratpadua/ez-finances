@@ -1,7 +1,7 @@
 package br.com.ez.finances.domain.form.transaction;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +25,7 @@ public class UpdateTransaction {
     private Optional<BigDecimal> balance;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private Optional<ZonedDateTime> inputDate;
+    private Optional<LocalDateTime> inputDate;
 
     /**
      * Constructor with the mandatory fields, used by Spring/Jackson to create the object. Any non-mandatory fields are
@@ -51,7 +51,7 @@ public class UpdateTransaction {
      * @return Update transaction valid form.
      */
     public static UpdateTransaction of(Long sourceId, TransactionType type, String description, BigDecimal balance,
-            ZonedDateTime inputDate) {
+            LocalDateTime inputDate) {
         UpdateTransaction updateTransaction = new UpdateTransaction();
         updateTransaction.setSourceId(sourceId);
         updateTransaction.setType(type);
@@ -96,11 +96,11 @@ public class UpdateTransaction {
         this.balance = Optional.ofNullable(balance);
     }
 
-    public Optional<ZonedDateTime> getInputDate() {
+    public Optional<LocalDateTime> getInputDate() {
         return inputDate;
     }
 
-    public void setInputDate(ZonedDateTime inputDate) {
+    public void setInputDate(LocalDateTime inputDate) {
         this.inputDate = Optional.ofNullable(inputDate);
     }
 }

@@ -28,6 +28,7 @@
     <properties>
         <liquibase.version>3.6.2</liquibase.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
+        <ofx4j.version>1.13</ofx4j.version>
         <postgresql.version>42.2.3</postgresql.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -77,9 +78,21 @@
 
             <!-- Other dependencies -->
             <dependency>
+                <groupId>com.webcohesion.ofx4j</groupId>
+                <artifactId>ofx4j</artifactId>
+                <version>${ofx4j.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct-jdk8</artifactId>
                 <version>${mapstruct.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-multipart-provider</artifactId>
+                <version>3.6.1.Final</version>
             </dependency>
 
         </dependencies>

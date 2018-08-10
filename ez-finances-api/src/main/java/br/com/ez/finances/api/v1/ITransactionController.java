@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.ez.finances.api.v1.representation.transaction.TransactionRepresentation;
-import br.com.ez.finances.api.v1.representation.translation.TranslationRepresentation;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
 
@@ -57,4 +57,14 @@ public interface ITransactionController {
     @ResponseStatus(HttpStatus.OK)
     TransactionRepresentation updateTransaction(@PathVariable Long id,
             @RequestBody @Valid UpdateTransaction updateTransaction);
+
+    /**
+     * Reads a file and returns the transactions found.
+     *
+     * @param filePath The file location.
+     * @return A list of transactions.
+     */
+    @GetMapping(path = "/upload")
+    @ResponseStatus(HttpStatus.OK)
+    List<TransactionRepresentation> uploadFile(@RequestParam String filePath);
 }

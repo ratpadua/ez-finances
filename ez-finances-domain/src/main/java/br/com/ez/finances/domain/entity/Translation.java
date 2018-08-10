@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.enums.TransactionType;
 import br.com.ez.finances.domain.form.translation.CreateTranslation;
 
 /**
@@ -31,6 +32,10 @@ public class Translation {
     @ManyToOne
     @JoinColumn(name = "SOURCE_ID")
     private Source source;
+
+    @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
+    private TransactionType type;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -56,6 +61,14 @@ public class Translation {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -85,6 +98,7 @@ public class Translation {
     public static Translation of(CreateTranslation createTranslation, Source source) {
         Translation translation = new Translation();
         translation.setSource(source);
+        translation.setType(createTranslation.getType());
         translation.setDescription(createTranslation.getDescription());
         translation.setToDescription(createTranslation.getToDescription());
         translation.setStatus(Status.ACTIVE);

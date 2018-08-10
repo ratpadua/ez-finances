@@ -1,8 +1,11 @@
 package br.com.ez.finances.service.v1;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import br.com.ez.finances.domain.dto.TransactionDTO;
 import br.com.ez.finances.domain.entity.Transaction;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
@@ -36,4 +39,12 @@ public interface ITransactionService {
      * @return The updated transaction.
      */
     Transaction updateTransaction(Long id, UpdateTransaction updateTransaction);
+
+    /**
+     * Reads a file and returns the transactions found.
+     *
+     * @param filePath The file location.
+     * @return A list of transactions.
+     */
+    List<TransactionDTO> uploadFile(String filePath);
 }

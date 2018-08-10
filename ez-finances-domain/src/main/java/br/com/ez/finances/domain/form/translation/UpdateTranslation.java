@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.enums.TransactionType;
 import br.com.ez.finances.domain.validator.ObjectValidator;
 
 /**
@@ -12,11 +13,13 @@ import br.com.ez.finances.domain.validator.ObjectValidator;
  */
 public class UpdateTranslation {
 
+    private Optional<Long> sourceId;
+
+    private Optional<TransactionType> type;
+
     private Optional<String> toDescription;
 
     private Optional<Status> status;
-
-    private Optional<Long> sourceId;
 
     /**
      * Constructor with the mandatory fields, used by Spring/Jackson to create the object. Any non-mandatory fields are
@@ -24,28 +27,46 @@ public class UpdateTranslation {
      */
     @JsonCreator(mode = JsonCreator.Mode.DEFAULT)
     private UpdateTranslation() {
+        this.sourceId = Optional.empty();
+        this.type = Optional.empty();
         this.toDescription = Optional.empty();
         this.status = Optional.empty();
-        this.sourceId = Optional.empty();
     }
 
     /**
      * Static form builder requiring only the mandatory parameters.
      *
+     * @param sourceId      Optional parameter source id.
+     * @param type          Optional parameter transaction type.
      * @param toDescription Optional parameter translate to.
      * @param status        Optional parameter status.
-     * @param sourceId      Optional parameter source id.
      * @return Update translation valid form.
      */
-    public static UpdateTranslation of(String toDescription, Status status, Long sourceId) {
+    public static UpdateTranslation of(Long sourceId, TransactionType type, String toDescription, Status status) {
         UpdateTranslation updateTranslation = new UpdateTranslation();
+        updateTranslation.setSourceId(sourceId);
         updateTranslation.setToDescription(toDescription);
         updateTranslation.setStatus(status);
-        updateTranslation.setSourceId(sourceId);
 
         ObjectValidator.validate(updateTranslation);
 
         return updateTranslation;
+    }
+
+    public Optional<Long> getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Long sourceId) {
+        this.sourceId = Optional.ofNullable(sourceId);
+    }
+
+    public Optional<TransactionType> getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = Optional.ofNullable(type);
     }
 
     public Optional<String> getToDescription() {
@@ -62,13 +83,5 @@ public class UpdateTranslation {
 
     public void setStatus(Status status) {
         this.status = Optional.ofNullable(status);
-    }
-
-    public Optional<Long> getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Long sourceId) {
-        this.sourceId = Optional.ofNullable(sourceId);
     }
 }

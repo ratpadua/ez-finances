@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import br.com.ez.finances.api.v1.representation.source.SourceRepresentation;
 import br.com.ez.finances.domain.enums.Status;
+import br.com.ez.finances.domain.enums.TransactionType;
 
 /**
  * Rest response translation representation. Any null values are not included in the JSON.
@@ -14,6 +15,8 @@ public class TranslationRepresentation {
     private Long id;
 
     private SourceRepresentation source;
+
+    private TransactionType type;
 
     private String description;
 
@@ -35,6 +38,14 @@ public class TranslationRepresentation {
 
     public void setSource(SourceRepresentation source) {
         this.source = source;
+    }
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public void setType(TransactionType type) {
+        this.type = type;
     }
 
     public String getDescription() {
