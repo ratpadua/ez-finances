@@ -26,6 +26,8 @@
     </parent>
 
     <properties>
+        <commonsio.version>2.6</commonsio.version>
+        <h2.version>1.4.197</h2.version>
         <liquibase.version>3.6.2</liquibase.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <ofx4j.version>1.13</ofx4j.version>
@@ -78,9 +80,21 @@
 
             <!-- Other dependencies -->
             <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.webcohesion.ofx4j</groupId>
                 <artifactId>ofx4j</artifactId>
                 <version>${ofx4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commonsio.version}</version>
             </dependency>
 
             <dependency>

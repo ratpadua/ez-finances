@@ -10,10 +10,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-
 import br.com.ez.finances.api.v1.representation.error.ErrorRepresentation;
 import br.com.ez.finances.domain.error.ErrorCode;
+import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.web.config.ResourceBundle;
 
 /**
@@ -22,6 +21,14 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ControllerAdvice
 @ResponseBody
 public class EZExceptionHandler {
+
+    @ExceptionHandler({NotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorRepresentation notFoundException(NotFoundException ex) {
+        return ErrorRepresentation.of(ex.getErrorCode().getCode(),
+                ResourceBundle.getMessage(ex.getErrorCode().getKey()), null);
+    }
 
     @ExceptionHandler({MissingServletRequestParameterException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)

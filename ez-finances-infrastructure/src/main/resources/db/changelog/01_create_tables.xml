@@ -3,23 +3,23 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
     <changeSet author="raul.padua" id="01_create_tables">
         <sql>
-            CREATE TABLE IF NOT EXISTS ez_schema.profile (
+            CREATE TABLE IF NOT EXISTS {{schema}}.profile (
             id            BIGSERIAL PRIMARY KEY     NOT NULL,
             name          VARCHAR(50) UNIQUE        NOT NULL,
             balance       DECIMAL(12,2)             NOT NULL,
             status        VARCHAR(20)               NOT NULL
             );
 
-            CREATE TABLE IF NOT EXISTS ez_schema.source (
+            CREATE TABLE IF NOT EXISTS {{schema}}.source (
             id            BIGSERIAL PRIMARY KEY     NOT NULL,
             profile_id    BIGINT                    NOT NULL,
             name          VARCHAR(50)               NOT NULL,
             status        VARCHAR(20)               NOT NULL,
 
-            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES ez_schema.profile (id)
+            CONSTRAINT fk_profile FOREIGN KEY (profile_id) REFERENCES {{schema}}.profile (id)
             );
 
-            CREATE TABLE IF NOT EXISTS ez_schema.translation (
+            CREATE TABLE IF NOT EXISTS {{schema}}.translation (
             id                  BIGSERIAL PRIMARY KEY   NOT NULL,
             source_id           BIGINT                  NOT NULL,
             type                VARCHAR(20)             NOT NULL,
@@ -27,10 +27,10 @@
             to_description      VARCHAR(255)            NOT NULL,
             status              VARCHAR(20)             NOT NULL,
 
-            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES ez_schema.source (id)
+            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES {{schema}}.source (id)
             );
 
-            CREATE TABLE IF NOT EXISTS ez_schema.transaction (
+            CREATE TABLE IF NOT EXISTS {{schema}}.transaction (
             id              BIGSERIAL PRIMARY KEY   NOT NULL,
             source_id       BIGINT                  NOT NULL,
             translation_id  BIGINT,
@@ -39,8 +39,8 @@
             balance         DECIMAL(12,2)           NOT NULL,
             input_date      TIMESTAMP               NOT NULL,
 
-            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES ez_schema.source (id),
-            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES ez_schema.translation (id)
+            CONSTRAINT fk_source FOREIGN KEY (source_id) REFERENCES {{schema}}.source (id),
+            CONSTRAINT fk_translation FOREIGN KEY (translation_id) REFERENCES {{schema}}.translation (id)
             );
 
         </sql>
