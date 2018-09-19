@@ -2,7 +2,6 @@ package br.com.ez.finances.api.v1.representation.source;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import br.com.ez.finances.api.v1.representation.profile.ProfileRepresentation;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
@@ -12,8 +11,6 @@ import br.com.ez.finances.domain.enums.Status;
 public class SourceRepresentation {
 
     private Long id;
-
-    private ProfileRepresentation profile;
 
     private String name;
 
@@ -25,14 +22,6 @@ public class SourceRepresentation {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ProfileRepresentation getProfile() {
-        return profile;
-    }
-
-    public void setProfile(ProfileRepresentation profile) {
-        this.profile = profile;
     }
 
     public String getName() {

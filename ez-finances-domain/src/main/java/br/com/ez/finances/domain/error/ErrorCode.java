@@ -32,6 +32,7 @@ public class ErrorCode {
     public static final ErrorCode ERR_003 = new ErrorCode("ERR_003", "invalid.format");
     public static final ErrorCode ERR_004 = new ErrorCode("ERR_004", "missing.parameter");
     public static final ErrorCode ERR_005 = new ErrorCode("ERR_005", "invalid.argument");
+    public static final ErrorCode ERR_006 = new ErrorCode("ERR_006", "argument.mismatch");
 
     //Profile Errors - ERR_600 to ERR_699
     public static final ErrorCode ERR_600 = new ErrorCode("ERR_600", "profile.not.found");

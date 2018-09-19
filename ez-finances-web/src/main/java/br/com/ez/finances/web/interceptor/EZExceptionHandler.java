@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import br.com.ez.finances.api.v1.representation.error.ErrorRepresentation;
 import br.com.ez.finances.domain.error.ErrorCode;
@@ -23,6 +24,15 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ResponseBody
 public class EZExceptionHandler {
 
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_006.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_006.getKey()),
+                ex.getMessage());
+    }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -32,21 +42,21 @@ public class EZExceptionHandler {
                 ex.getMessage());
     }
 
+    @ExceptionHandler({MissingServletRequestParameterException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation missingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_004.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_004.getKey()),
+                ex.getMessage());
+    }
+
     @ExceptionHandler({NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorRepresentation notFoundException(NotFoundException ex) {
         return ErrorRepresentation.of(ex.getErrorCode().getCode(),
                 ResourceBundle.getMessage(ex.getErrorCode().getKey()), null);
-    }
-
-    @ExceptionHandler({MissingServletRequestParameterException.class})
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ResponseBody
-    public ErrorRepresentation missingServletRequestParameterException(MissingServletRequestParameterException ex) {
-        return ErrorRepresentation.of(ErrorCode.ERR_004.getCode(),
-                ResourceBundle.getMessage(ErrorCode.ERR_004.getKey()),
-                ex.getMessage());
     }
 
     @ExceptionHandler({HttpMessageNotReadableException.class})
