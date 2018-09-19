@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.ez.finances.domain.enums.Status;
 
 /**
- * Profile related API controller integration tests.
+ * Source related API controller integration tests.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -65,6 +65,14 @@ public class SourceControllerIntegrationTest {
                 .andExpect(jsonPath("$.id", is(4)))
                 .andExpect(jsonPath("$.name", is("Groceries")))
                 .andExpect(jsonPath("$.status", is(Status.INACTIVE.name())));
+    }
+
+    @Test
+    public void searchSourceNotFoundTestV1() throws Exception {
+        mvc.perform(get("/v1/source/{id}", 100))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("ERR_700")))
+                .andExpect(jsonPath("$.message", is("Source not found.")));
     }
 
     @Test
@@ -115,8 +123,23 @@ public class SourceControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Other Purchases")))
                 .andExpect(jsonPath("$.status", is(Status.INACTIVE.name())));
+    }
+
+    @Test
+    public void updateSourceNotFoundTestV1() throws Exception {
+        String jsonContent = IOUtils.toString(getClass().getClassLoader().
+                getResourceAsStream("payload/source/update-source.json"), Charset.forName("UTF-8"));
+
+        mvc.perform(put("/v1/source/{id}", 100)
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("ERR_700")))
+                .andExpect(jsonPath("$.message", is("Source not found.")));
     }
 
     @Test
@@ -129,6 +152,7 @@ public class SourceControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(7)))
                 .andExpect(jsonPath("$.name", is("Cleaning Supplies")))
                 .andExpect(jsonPath("$.status", is(Status.ACTIVE.name())));
     }

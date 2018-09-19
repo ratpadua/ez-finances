@@ -12,6 +12,7 @@ import br.com.ez.finances.domain.enums.Status;
 import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.source.CreateSource;
 import br.com.ez.finances.domain.form.source.UpdateSource;
+import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.infrastructure.repository.SourceRepository;
 import br.com.ez.finances.service.v1.IProfileService;
 import br.com.ez.finances.service.v1.ISourceService;
@@ -42,7 +43,7 @@ public class SourceService implements ISourceService {
     public Source searchSource(Long id) {
         Optional<Source> optSource = sourceRepository.findById(id);
 
-        if (!optSource.isPresent()) throw new RuntimeException(ErrorCode.ERR_700.getCode());
+        if (!optSource.isPresent()) throw new NotFoundException(ErrorCode.ERR_700);
 
         return optSource.get();
     }
@@ -57,7 +58,7 @@ public class SourceService implements ISourceService {
     public Source updateSource(Long id, UpdateSource updateSource) {
         Optional<Source> optSource = sourceRepository.findById(id);
 
-        if (!optSource.isPresent()) throw new RuntimeException(ErrorCode.ERR_700.getCode());
+        if (!optSource.isPresent()) throw new NotFoundException(ErrorCode.ERR_700);
 
         Source source = optSource.get();
 

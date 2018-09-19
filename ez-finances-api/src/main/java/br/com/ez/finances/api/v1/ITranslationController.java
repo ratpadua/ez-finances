@@ -31,12 +31,14 @@ public interface ITranslationController {
     /**
      * Searches all translations with the provided statuses, if none is provided, all translations are searched.
      *
+     * @param profileId Mandatory request parameter with the profile id.
      * @param statuses Optional request parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the translations found.
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<TranslationRepresentation> getTranslations(@RequestParam(required = false) Status... statuses);
+    List<TranslationRepresentation> getTranslations(@RequestParam Long profileId,
+            @RequestParam(required = false) Status... statuses);
 
     /**
      * Searches the translation of a description.

@@ -141,6 +141,20 @@ public class ProfileControllerIntegrationTest {
     }
 
     @Test
+    public void updateProfileNotFoundTestV1() throws Exception {
+        String jsonContent = IOUtils.toString(getClass().getClassLoader().
+                getResourceAsStream("payload/profile/update-profile.json"), Charset.forName("UTF-8"));
+
+        mvc.perform(put("/v1/profile/{id}", 100)
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("ERR_600")))
+                .andExpect(jsonPath("$.message", is("Profile not found.")));
+    }
+
+    @Test
     public void updateProfileEmptyTestV1() throws Exception {
         String jsonContent = IOUtils.toString(getClass().getClassLoader().
                 getResourceAsStream("payload/profile/update-profile-empty.json"), Charset.forName("UTF-8"));

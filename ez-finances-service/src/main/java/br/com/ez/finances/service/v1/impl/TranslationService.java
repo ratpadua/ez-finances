@@ -12,6 +12,7 @@ import br.com.ez.finances.domain.enums.Status;
 import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.translation.CreateTranslation;
 import br.com.ez.finances.domain.form.translation.UpdateTranslation;
+import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.infrastructure.repository.TranslationRepository;
 import br.com.ez.finances.service.v1.ISourceService;
 import br.com.ez.finances.service.v1.ITranslationService;
@@ -33,9 +34,12 @@ public class TranslationService implements ITranslationService {
     }
 
     @Override
-    public List<Translation> getTranslations(Status... statuses) {
+    public List<Translation> getTranslations(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
-        return translationRepository.findByStatusInOrderByDescription(statuses);
+
+        List<Source> sources = sourceService.getSources(profileId, statuses);
+
+        return translationRepository.findBySourceInAndStatusInOrderByDescription(sources, statuses);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class TranslationService implements ITranslationService {
     public Translation updateTranslation(Long id, UpdateTranslation updateTranslation) {
         Optional<Translation> optTranslation = translationRepository.findById(id);
 
-        if (!optTranslation.isPresent()) throw new RuntimeException(ErrorCode.ERR_800.getCode());
+        if (!optTranslation.isPresent()) throw new NotFoundException(ErrorCode.ERR_800);
 
         Translation translation = optTranslation.get();
 

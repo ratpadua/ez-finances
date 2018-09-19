@@ -41,8 +41,9 @@ public class TranslationController implements ITranslationController {
     }
 
     @Override
-    public List<TranslationRepresentation> getTranslations(@RequestParam(required = false) Status... statuses) {
-        return mapper.toTranslationRepresentation(translationService.getTranslations(statuses));
+    public List<TranslationRepresentation> getTranslations(@RequestParam Long profileId,
+            @RequestParam(required = false) Status... statuses) {
+        return mapper.toTranslationRepresentation(translationService.getTranslations(profileId, statuses));
     }
 
     @Override

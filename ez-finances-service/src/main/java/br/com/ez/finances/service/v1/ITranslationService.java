@@ -15,10 +15,11 @@ public interface ITranslationService {
     /**
      * Searches all translations with the provided statuses, if none is provided, all translations are searched.
      *
+     * @param profileId Mandatory parameter with the profile id.
      * @param statuses Optional parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the translations found.
      */
-    List<Translation> getTranslations(Status... statuses);
+    List<Translation> getTranslations(Long profileId, Status... statuses);
 
     /**
      * Searches the translation of a description.
