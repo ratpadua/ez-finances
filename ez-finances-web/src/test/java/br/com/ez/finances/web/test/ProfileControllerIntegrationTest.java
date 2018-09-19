@@ -3,6 +3,7 @@ package br.com.ez.finances.web.test;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -97,6 +98,48 @@ public class ProfileControllerIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", is("Peter")))
                 .andExpect(jsonPath("$.balance", is(4554.45)))
+                .andExpect(jsonPath("$.status", is(Status.ACTIVE.name())));
+    }
+
+    @Test
+    public void createProfileBadRequestTestV1() throws Exception {
+        String jsonContent = IOUtils.toString(getClass().getClassLoader().
+                getResourceAsStream("payload/profile/create-profile-bad-request.json"), Charset.forName("UTF-8"));
+
+        mvc.perform(post("/v1/profile")
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateProfileTestV1() throws Exception {
+        String jsonContent = IOUtils.toString(getClass().getClassLoader().
+                getResourceAsStream("payload/profile/update-profile.json"), Charset.forName("UTF-8"));
+
+        mvc.perform(put("/v1/profile/{id}", 1)
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Peter")))
+                .andExpect(jsonPath("$.balance", is(0.0)))
+                .andExpect(jsonPath("$.status", is(Status.INACTIVE.name())));
+    }
+
+    @Test
+    public void updateProfileEmptyTestV1() throws Exception {
+        String jsonContent = IOUtils.toString(getClass().getClassLoader().
+                getResourceAsStream("payload/profile/update-profile-empty.json"), Charset.forName("UTF-8"));
+
+        mvc.perform(put("/v1/profile/{id}", 1)
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("John")))
+                .andExpect(jsonPath("$.balance", is(123456.78)))
                 .andExpect(jsonPath("$.status", is(Status.ACTIVE.name())));
     }
 }

@@ -4,6 +4,7 @@ import javax.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +22,15 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ControllerAdvice
 @ResponseBody
 public class EZExceptionHandler {
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_005.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_005.getKey()),
+                ex.getMessage());
+    }
 
     @ExceptionHandler({NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
