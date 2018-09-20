@@ -25,110 +25,62 @@ import br.com.ez.finances.domain.enums.Status;
 import br.com.ez.finances.domain.enums.TransactionType;
 
 /**
- * Translation related API controller integration tests.
+ * Transaction related API controller integration tests.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@Sql({"/sql/profile-data.sql", "/sql/source-data.sql", "/sql/translation-data.sql"})
+@Sql({"/sql/profile-data.sql", "/sql/source-data.sql", "/sql/translation-data.sql", "/sql/transaction-data.sql"})
 @Transactional
-public class TranslationControllerIntegrationTest {
+public class TransactionControllerIntegrationTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void getTranslationsTestV1() throws Exception {
-        mvc.perform(get("/v1/translation?statuses={statuses}", Status.ACTIVE.name())
-                .header("Profile-Id", 1))
+    public void getAllTransactionsTestV1() throws Exception {
+        mvc.perform(get("/v1/transaction?sort={sort}", "inputDate,DESC"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(3)))
-                .andExpect(jsonPath("$[0].source.id", is(2)))
-                .andExpect(jsonPath("$[0].source.name", is("Restaurants")))
-                .andExpect(jsonPath("$[0].source.status", is(Status.INACTIVE.name())))
-                .andExpect(jsonPath("$[0].description", is("ALIC SEAF")))
-                .andExpect(jsonPath("$[0].toDescription", is("Alice Seafood")))
-                .andExpect(jsonPath("$[0].status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$[1].id", is(5)))
-                .andExpect(jsonPath("$[1].source.id", is(3)))
-                .andExpect(jsonPath("$[1].source.name", is("Gas")))
-                .andExpect(jsonPath("$[1].source.status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$[1].type", is(TransactionType.VARIABLE.name())))
-                .andExpect(jsonPath("$[1].description", is("PAT GSTAT")))
-                .andExpect(jsonPath("$[1].toDescription", is("Patrick Gas Station")))
-                .andExpect(jsonPath("$[1].status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$[2].id", is(2)))
-                .andExpect(jsonPath("$[2].type", is(TransactionType.VARIABLE.name())))
-                .andExpect(jsonPath("$[2].description", is("TIDE 24HRS")))
-                .andExpect(jsonPath("$[2].toDescription", is("Tide Store")))
-                .andExpect(jsonPath("$[2].status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$[3].id", is(1)))
-                .andExpect(jsonPath("$[3].source.id", is(1)))
-                .andExpect(jsonPath("$[3].source.name", is("Groceries")))
-                .andExpect(jsonPath("$[3].source.status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$[3].type", is(TransactionType.VARIABLE.name())))
-                .andExpect(jsonPath("$[3].description", is("ULTMKT LMT")))
-                .andExpect(jsonPath("$[3].toDescription", is("Ultra Market")))
-                .andExpect(jsonPath("$[3].status", is(Status.ACTIVE.name())));
+                .andExpect(jsonPath("$.content[0].id", is(2)))
+                .andExpect(jsonPath("$.content[0].source.id", is(3)))
+                .andExpect(jsonPath("$.content[0].source.name", is("Gas")))
+                .andExpect(jsonPath("$.content[0].source.status", is(Status.ACTIVE.name())))
+                .andExpect(jsonPath("$.content[0].translation.id", is(5)))
+                .andExpect(jsonPath("$.content[0].translation.type", is(TransactionType.VARIABLE.name())))
+                .andExpect(jsonPath("$.content[0].translation.description", is("PAT GSTAT")))
+                .andExpect(jsonPath("$.content[0].translation.toDescription", is("Patrick Gas Station")))
+                .andExpect(jsonPath("$.content[0].translation.status", is(Status.ACTIVE.name())))
+                .andExpect(jsonPath("$.content[0].type", is(TransactionType.FIXED.name())))
+                .andExpect(jsonPath("$.content[0].description", is("PAT GSTAT")))
+                .andExpect(jsonPath("$.content[0].balance", is(109.88)))
+                .andExpect(jsonPath("$.content[0].inputDate", is("2018-09-20T08:12:33.123")))
+                .andExpect(jsonPath("$.content[1].id", is(1)))
+                .andExpect(jsonPath("$.content[1].source.id", is(1)))
+                .andExpect(jsonPath("$.content[1].source.name", is("Groceries")))
+                .andExpect(jsonPath("$.content[1].source.status", is(Status.ACTIVE.name())))
+                .andExpect(jsonPath("$.content[1].translation.id", is(1)))
+                .andExpect(jsonPath("$.content[1].translation.type", is(TransactionType.VARIABLE.name())))
+                .andExpect(jsonPath("$.content[1].translation.description", is("ULTMKT LMT")))
+                .andExpect(jsonPath("$.content[1].translation.toDescription", is("Ultra Market")))
+                .andExpect(jsonPath("$.content[1].translation.status", is(Status.ACTIVE.name())))
+                .andExpect(jsonPath("$.content[1].type", is(TransactionType.VARIABLE.name())))
+                .andExpect(jsonPath("$.content[1].description", is("ULTMKT LMT")))
+                .andExpect(jsonPath("$.content[1].balance", is(54.78)))
+                .andExpect(jsonPath("$.content[1].inputDate", is("2018-09-19T18:55:34.534")));
     }
 
-    @Test
+    /*@Test
     public void getTranslationsTestBadRequestV1() throws Exception {
         mvc.perform(get("/v1/translation"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("ERR_007")))
+                .andExpect(jsonPath("$.code", is("ERR_004")))
                 .andExpect(jsonPath("$.message",
-                        is("Missing header. Please check the service documentation.")));
+                        is("Missing request parameter. Please check the service documentation.")));
     }
 
     @Test
     public void searchTranslationTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/{id}", 1)
-                .header("Profile-Id", 1))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.source.id", is(1)))
-                .andExpect(jsonPath("$.source.name", is("Groceries")))
-                .andExpect(jsonPath("$.source.status", is(Status.ACTIVE.name())))
-                .andExpect(jsonPath("$.type", is(TransactionType.VARIABLE.name())))
-                .andExpect(jsonPath("$.description", is("ULTMKT LMT")))
-                .andExpect(jsonPath("$.toDescription", is("Ultra Market")))
-                .andExpect(jsonPath("$.status", is(Status.ACTIVE.name())));
-    }
-
-    @Test
-    public void searchTranslationNotFoundTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/{id}", 100)
-                .header("Profile-Id", 1))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code", is("ERR_800")))
-                .andExpect(jsonPath("$.message", is("Translation not found.")));
-    }
-
-    @Test
-    public void searchTranslationBadRequestTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/{id}", "123abc")
-                .header("Profile-Id", 1))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("ERR_006")))
-                .andExpect(jsonPath("$.message",
-                        is("Path parameter in wrong format. Please check the service documentation.")));
-    }
-
-    @Test
-    public void searchTranslationInvalidProfileTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/{id}", 1)
-                .header("Profile-Id", 2))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("ERR_810")))
-                .andExpect(jsonPath("$.message",
-                        is("This translation does not belong to the provided profile.")));
-    }
-
-    @Test
-    public void searchTranslationByDescriptionTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/search?description={description}", "ELT CMP")
-                .header("Profile-Id", 2))
+        mvc.perform(get("/v1/translation/search?description={description}", "ELT CMP"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(6)))
                 .andExpect(jsonPath("$.source.id", is(5)))
@@ -141,9 +93,8 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationByDescriptionBadRequestTestV1() throws Exception {
-        mvc.perform(get("/v1/translation/search")
-                .header("Profile-Id", 1))
+    public void searchTranslationBadRequestTestV1() throws Exception {
+        mvc.perform(get("/v1/translation/search"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_004")))
                 .andExpect(jsonPath("$.message",
@@ -156,7 +107,6 @@ public class TranslationControllerIntegrationTest {
                 getResourceAsStream("payload/translation/create-translation.json"), Charset.forName("UTF-8"));
 
         mvc.perform(post("/v1/translation")
-                .header("Profile-Id", 3)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -176,7 +126,6 @@ public class TranslationControllerIntegrationTest {
                 getResourceAsStream("payload/translation/create-translation-bad-request.json"), Charset.forName("UTF-8"));
 
         mvc.perform(post("/v1/translation")
-                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -192,7 +141,6 @@ public class TranslationControllerIntegrationTest {
                 getResourceAsStream("payload/translation/update-translation.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/translation/{id}", 4)
-                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -213,7 +161,6 @@ public class TranslationControllerIntegrationTest {
                 getResourceAsStream("payload/translation/update-translation.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/translation/{id}", 100)
-                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -228,7 +175,6 @@ public class TranslationControllerIntegrationTest {
                 getResourceAsStream("payload/translation/update-translation-empty.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/translation/{id}", 6)
-                .header("Profile-Id", 2)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -245,11 +191,10 @@ public class TranslationControllerIntegrationTest {
 
     @Test
     public void updateTranslationBadRequestTestV1() throws Exception {
-        mvc.perform(put("/v1/translation/{id}", "123abc")
-                .header("Profile-Id", 1))
+        mvc.perform(put("/v1/translation/{id}", "123abc"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_006")))
                 .andExpect(jsonPath("$.message",
                         is("Path parameter in wrong format. Please check the service documentation.")));
-    }
+    }*/
 }

@@ -12,6 +12,7 @@ import br.com.ez.finances.domain.enums.Status;
 import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.source.CreateSource;
 import br.com.ez.finances.domain.form.source.UpdateSource;
+import br.com.ez.finances.infrastructure.exception.InvalidProfileException;
 import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.infrastructure.repository.SourceRepository;
 import br.com.ez.finances.service.v1.IProfileService;
@@ -40,27 +41,26 @@ public class SourceService implements ISourceService {
     }
 
     @Override
-    public Source searchSource(Long id) {
+    public Source searchSource(Long profileId, Long id) {
         Optional<Source> optSource = sourceRepository.findById(id);
 
         if (!optSource.isPresent()) throw new NotFoundException(ErrorCode.ERR_700);
+
+        if (!profileId.equals(optSource.get().getProfile().getId()))
+            throw new InvalidProfileException(ErrorCode.ERR_710);
 
         return optSource.get();
     }
 
     @Override
-    public Source createSource(CreateSource createSource) {
-        Profile profile = profileService.searchProfile(createSource.getProfileId());
+    public Source createSource(Long profileId, CreateSource createSource) {
+        Profile profile = profileService.searchProfile(profileId);
         return sourceRepository.save(Source.of(createSource, profile));
     }
 
     @Override
-    public Source updateSource(Long id, UpdateSource updateSource) {
-        Optional<Source> optSource = sourceRepository.findById(id);
-
-        if (!optSource.isPresent()) throw new NotFoundException(ErrorCode.ERR_700);
-
-        Source source = optSource.get();
+    public Source updateSource(Long profileId, Long id, UpdateSource updateSource) {
+        Source source = searchSource(profileId, id);
 
         updateSource.getName().ifPresent(source::setName);
         updateSource.getStatus().ifPresent(source::setStatus);

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import br.com.ez.finances.api.v1.representation.error.ErrorRepresentation;
 import br.com.ez.finances.domain.error.ErrorCode;
+import br.com.ez.finances.infrastructure.exception.InvalidProfileException;
 import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.web.config.ResourceBundle;
 
@@ -23,6 +25,23 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ControllerAdvice
 @ResponseBody
 public class EZExceptionHandler {
+
+    @ExceptionHandler({ServletRequestBindingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation servletRequestBindingException(ServletRequestBindingException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_007.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_007.getKey()),
+                ex.getMessage());
+    }
+
+    @ExceptionHandler({InvalidProfileException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation invalidProfileException(InvalidProfileException ex) {
+        return ErrorRepresentation.of(ex.getErrorCode().getCode(),
+                ResourceBundle.getMessage(ex.getErrorCode().getKey()),null);
+    }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

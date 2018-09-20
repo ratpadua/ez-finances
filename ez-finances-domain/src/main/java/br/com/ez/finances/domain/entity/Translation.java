@@ -30,6 +30,10 @@ public class Translation {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "PROFILE_ID")
+    private Profile profile;
+
+    @ManyToOne
     @JoinColumn(name = "SOURCE_ID")
     private Source source;
 
@@ -53,6 +57,14 @@ public class Translation {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public Source getSource() {
@@ -95,13 +107,14 @@ public class Translation {
         this.status = status;
     }
 
-    public static Translation of(CreateTranslation createTranslation, Source source) {
+    public static Translation of(CreateTranslation createTranslation, Profile profile, Source source) {
         Translation translation = new Translation();
-        translation.setSource(source);
-        translation.setType(createTranslation.getType());
+        translation.setProfile(profile);
         translation.setDescription(createTranslation.getDescription());
         translation.setToDescription(createTranslation.getToDescription());
         translation.setStatus(Status.ACTIVE);
+        translation.setSource(source);
+        createTranslation.getType().ifPresent(translation::setType);
 
         return translation;
     }

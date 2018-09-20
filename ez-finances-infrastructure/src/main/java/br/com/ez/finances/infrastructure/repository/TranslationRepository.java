@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import br.com.ez.finances.domain.entity.Source;
 import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.enums.Status;
 
@@ -16,17 +15,18 @@ public interface TranslationRepository extends CrudRepository<Translation, Long>
     /**
      * Searches all translations with the provided statuses and orders them by description.
      *
-     * @param sources Mandatory parameter containing the sources to be searched.
-     * @param statuses Mandatory parameter containing one or more valid statuses (ACTIVE, INACTIVE).
+     * @param profileId The profile to be searched.
+     * @param statuses  Mandatory parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the translations found.
      */
-    List<Translation> findBySourceInAndStatusInOrderByDescription(List<Source> sources, Status... statuses);
+    List<Translation> findByProfileIdEqualsAndStatusInOrderByDescription(Long profileId, Status... statuses);
 
     /**
      * Searches the translation from a provided description.
      *
+     * @param profileId   The profile to be searched.
      * @param description The description to be translated.
      * @return The translation found.
      */
-    Translation findByDescriptionEquals(String description);
+    Translation findByProfileIdEqualsAndDescriptionEquals(Long profileId, String description);
 }

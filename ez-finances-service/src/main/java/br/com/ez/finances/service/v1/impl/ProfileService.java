@@ -51,11 +51,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Profile updateProfile(Long id, UpdateProfile updateProfile) {
-        Optional<Profile> optProfile = profileRepository.findById(id);
-
-        if (!optProfile.isPresent()) throw new NotFoundException(ErrorCode.ERR_600);
-
-        Profile profile = optProfile.get();
+        Profile profile = searchProfile(id);
 
         updateProfile.getName().ifPresent(profile::setName);
         updateProfile.getBalance().ifPresent(profile::setBalance);
@@ -66,11 +62,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Profile addBalance(Long id, BigDecimal balance) {
-        Optional<Profile> optProfile = profileRepository.findById(id);
-
-        if (!optProfile.isPresent()) throw new NotFoundException(ErrorCode.ERR_600);
-
-        Profile profile = optProfile.get();
+        Profile profile = searchProfile(id);
         profile.setBalance(profile.getBalance().add(balance));
         return profileRepository.save(profile);
     }

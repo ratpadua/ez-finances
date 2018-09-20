@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ez.finances.api.v1.ITransactionController;
@@ -35,23 +37,39 @@ public class TransactionController implements ITransactionController {
     }
 
     @Override
-    public Page<TransactionRepresentation> getAllTransactions(Pageable pageable) {
-        return mapper.toTransactionRepresentation(transactionService.getAllTransactions(pageable));
+    public Page<TransactionRepresentation> getAllTransactions(@RequestHeader("Profile-Id") Long profileId,
+            Pageable pageable) {
+        return mapper.toTransactionRepresentation(transactionService.getAllTransactions(profileId, pageable));
     }
 
     @Override
-    public TransactionRepresentation createTransaction(@RequestBody @Valid CreateTransaction createTransaction) {
-        return mapper.toTransactionRepresentation(transactionService.createTransaction(createTransaction));
+    public TransactionRepresentation searchTransaction(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id) {
+        return mapper.toTransactionRepresentation(transactionService.searchTransaction(profileId, id));
     }
 
     @Override
-    public TransactionRepresentation updateTransaction(@PathVariable Long id,
-            @RequestBody @Valid UpdateTransaction updateTransaction) {
-        return mapper.toTransactionRepresentation(transactionService.updateTransaction(id, updateTransaction));
+    public TransactionRepresentation createTransaction(@RequestHeader("Profile-Id") Long profileId,
+            @RequestBody @Valid CreateTransaction createTransaction) {
+        return mapper.toTransactionRepresentation(transactionService.createTransaction(profileId, createTransaction));
     }
 
     @Override
-    public List<TransactionRepresentation> uploadFile(String filePath) {
-        return mapper.fromTransactionDTO(transactionService.uploadFile(filePath));
+    public TransactionRepresentation updateTransaction(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id, @RequestBody @Valid UpdateTransaction updateTransaction) {
+        return mapper.toTransactionRepresentation(
+                transactionService.updateTransaction(profileId, id, updateTransaction));
+    }
+
+    @Override
+    public void deleteTransaction(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id) {
+        transactionService.deleteTransaction(profileId, id);
+    }
+
+    @Override
+    public List<TransactionRepresentation> uploadFile(@RequestHeader("Profile-Id") Long profileId,
+            @RequestParam String filePath) {
+        return mapper.fromTransactionDTO(transactionService.uploadFile(profileId, filePath));
     }
 }

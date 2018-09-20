@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,23 +36,25 @@ public class SourceController implements ISourceController {
     }
 
     @Override
-    public List<SourceRepresentation> getSources(@RequestParam Long profileId,
+    public List<SourceRepresentation> getSources(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses) {
         return mapper.toSourceRepresentation(sourceService.getSources(profileId, statuses));
     }
 
     @Override
-    public SourceRepresentation searchSource(@PathVariable Long id) {
-        return mapper.toSourceRepresentation(sourceService.searchSource(id));
+    public SourceRepresentation searchSource(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id) {
+        return mapper.toSourceRepresentation(sourceService.searchSource(profileId, id));
     }
 
     @Override
-    public SourceRepresentation createSource(@RequestBody @Valid CreateSource createSource) {
-        return mapper.toSourceRepresentation(sourceService.createSource(createSource));
+    public SourceRepresentation createSource(@RequestHeader("Profile-Id") Long profileId,
+            @RequestBody @Valid CreateSource createSource) {
+        return mapper.toSourceRepresentation(sourceService.createSource(profileId, createSource));
     }
 
     @Override
-    public SourceRepresentation updateSource(@PathVariable Long id, @RequestBody @Valid UpdateSource updateSource) {
-        return mapper.toSourceRepresentation(sourceService.updateSource(id, updateSource));
+    public SourceRepresentation updateSource(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id, @RequestBody @Valid UpdateSource updateSource) {
+        return mapper.toSourceRepresentation(sourceService.updateSource(profileId, id, updateSource));
     }
 }

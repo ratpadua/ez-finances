@@ -7,21 +7,16 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ez.finances.api.v1.ITranslationController;
-import br.com.ez.finances.api.v1.representation.profile.ProfileRepresentation;
 import br.com.ez.finances.api.v1.representation.translation.TranslationRepresentation;
 import br.com.ez.finances.domain.enums.Status;
-import br.com.ez.finances.domain.form.profile.CreateProfile;
-import br.com.ez.finances.domain.form.profile.UpdateProfile;
 import br.com.ez.finances.domain.form.translation.CreateTranslation;
-import br.com.ez.finances.domain.form.translation.SearchTranslation;
 import br.com.ez.finances.domain.form.translation.UpdateTranslation;
-import br.com.ez.finances.service.v1.IProfileService;
 import br.com.ez.finances.service.v1.ITranslationService;
-import br.com.ez.finances.web.v1.mapper.ProfileMapper;
 import br.com.ez.finances.web.v1.mapper.TranslationMapper;
 
 /**
@@ -41,24 +36,34 @@ public class TranslationController implements ITranslationController {
     }
 
     @Override
-    public List<TranslationRepresentation> getTranslations(@RequestParam Long profileId,
+    public List<TranslationRepresentation> getTranslations(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses) {
         return mapper.toTranslationRepresentation(translationService.getTranslations(profileId, statuses));
     }
 
     @Override
-    public TranslationRepresentation searchTranslation(@RequestParam String description) {
-        return mapper.toTranslationRepresentation(translationService.searchTranslation(description));
+    public TranslationRepresentation searchTranslation(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id) {
+        return mapper.toTranslationRepresentation(translationService.searchTranslation(profileId, id));
     }
 
     @Override
-    public TranslationRepresentation createTranslation(@RequestBody @Valid CreateTranslation createTranslation) {
-        return mapper.toTranslationRepresentation(translationService.createTranslation(createTranslation));
+    public TranslationRepresentation searchTranslationByDescription(@RequestHeader("Profile-Id") Long profileId,
+            @RequestParam String description) {
+        return mapper.toTranslationRepresentation(
+                translationService.searchTranslationByDescription(profileId, description));
     }
 
     @Override
-    public TranslationRepresentation updateTranslation(@PathVariable Long id,
-            @RequestBody @Valid UpdateTranslation updateTranslation) {
-        return mapper.toTranslationRepresentation(translationService.updateTranslation(id, updateTranslation));
+    public TranslationRepresentation createTranslation(@RequestHeader("Profile-Id") Long profileId,
+            @RequestBody @Valid CreateTranslation createTranslation) {
+        return mapper.toTranslationRepresentation(translationService.createTranslation(profileId, createTranslation));
+    }
+
+    @Override
+    public TranslationRepresentation updateTranslation(@RequestHeader("Profile-Id") Long profileId,
+            @PathVariable Long id, @RequestBody @Valid UpdateTranslation updateTranslation) {
+        return mapper.toTranslationRepresentation(
+                translationService.updateTranslation(profileId, id, updateTranslation));
     }
 }

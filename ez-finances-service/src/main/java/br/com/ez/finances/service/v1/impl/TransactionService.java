@@ -27,12 +27,15 @@ import com.webcohesion.ofx4j.domain.data.banking.BankingResponseMessageSet;
 import com.webcohesion.ofx4j.io.AggregateUnmarshaller;
 
 import br.com.ez.finances.domain.dto.TransactionDTO;
+import br.com.ez.finances.domain.entity.Profile;
 import br.com.ez.finances.domain.entity.Source;
 import br.com.ez.finances.domain.entity.Transaction;
 import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
+import br.com.ez.finances.infrastructure.exception.InvalidProfileException;
+import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.infrastructure.repository.TransactionRepository;
 import br.com.ez.finances.service.v1.IProfileService;
 import br.com.ez.finances.service.v1.ISourceService;
@@ -63,16 +66,31 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public Page<Transaction> getAllTransactions(Pageable pageable) {
+    public Page<Transaction> getAllTransactions(Long profileId, Pageable pageable) {
         return transactionRepository.findAll(pageable);
     }
 
     @Override
+    public Transaction searchTransaction(Long profileId, Long id) {
+        Optional<Transaction> optTransaction = transactionRepository.findById(id);
+
+        if (!optTransaction.isPresent()) throw new NotFoundException(ErrorCode.ERR_900);
+
+        if (!profileId.equals(optTransaction.get().getProfile().getId()))
+            throw new InvalidProfileException(ErrorCode.ERR_910);
+
+        return optTransaction.get();
+    }
+
+    @Override
     @Transactional
-    public Transaction createTransaction(CreateTransaction createTransaction) {
-        Source source = sourceService.searchSource(createTransaction.getSourceId());
-        Translation translation = translationService.searchTranslation(createTransaction.getDescription());
-        Transaction transaction = Transaction.of(createTransaction, source, translation);
+    public Transaction createTransaction(Long profileId, CreateTransaction createTransaction) {
+        Profile profile = profileService.searchProfile(profileId);
+        Source source = sourceService.searchSource(profileId, createTransaction.getSourceId());
+        Translation translation =
+                translationService.searchTranslationByDescription(profileId, createTransaction.getDescription());
+
+        Transaction transaction = Transaction.of(createTransaction, profile, source, translation);
 
         profileService.addBalance(source.getProfile().getId(), transaction.getBalance());
 
@@ -81,15 +99,11 @@ public class TransactionService implements ITransactionService {
 
     @Override
     @Transactional
-    public Transaction updateTransaction(Long id, UpdateTransaction updateTransaction) {
-        Optional<Transaction> optTransaction = transactionRepository.findById(id);
-
-        if (!optTransaction.isPresent()) throw new RuntimeException(ErrorCode.ERR_900.getCode());
-
-        Transaction transaction = optTransaction.get();
+    public Transaction updateTransaction(Long profileId, Long id, UpdateTransaction updateTransaction) {
+        Transaction transaction = searchTransaction(profileId, id);
 
         updateTransaction.getSourceId().ifPresent(sourceId -> {
-            Source source = sourceService.searchSource(sourceId);
+            Source source = sourceService.searchSource(profileId, sourceId);
             transaction.setSource(source);
         });
 
@@ -103,7 +117,7 @@ public class TransactionService implements ITransactionService {
         });
 
         updateTransaction.getDescription().ifPresent(description -> {
-            Translation translation = translationService.searchTranslation(description);
+            Translation translation = translationService.searchTranslationByDescription(profileId, description);
 
             if (translation != null) {
                 transaction.setDescription(translation.getToDescription());
@@ -118,18 +132,27 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public List<TransactionDTO> uploadFile(String filePath) {
+    public void deleteTransaction(Long profileId, Long id) {
+        Transaction transaction = searchTransaction(profileId, id);
+
+        profileService.addBalance(profileId, transaction.getBalance().negate());
+
+        transactionRepository.delete(transaction);
+    }
+
+    @Override
+    public List<TransactionDTO> uploadFile(Long profileId, String filePath) {
         try {
             FileInputStream file = new FileInputStream(new File(filePath));
 
-            return readOFXFile(file);
+            return readOFXFile(profileId, file);
 
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(ErrorCode.ERR_901.getCode());
+            throw new RuntimeException(ErrorCode.ERR_920.getCode());
         }
     }
 
-    private List<TransactionDTO> readOFXFile(InputStream file) {
+    private List<TransactionDTO> readOFXFile(Long profileId, InputStream file) {
         try {
             AggregateUnmarshaller<ResponseEnvelope> a = new AggregateUnmarshaller<>(ResponseEnvelope.class);
             ResponseEnvelope re = a.unmarshal(file);
@@ -147,7 +170,7 @@ public class TransactionService implements ITransactionService {
                     Date datePosted = transaction.getDatePosted();
                     String memo = transaction.getMemo();
 
-                    Translation translation = translationService.searchTranslation(memo);
+                    Translation translation = translationService.searchTranslationByDescription(profileId, memo);
                     LocalDateTime inputDate = datePosted.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 
                     transactions.add(new TransactionDTO(translation, memo, amount, inputDate));
@@ -157,7 +180,7 @@ public class TransactionService implements ITransactionService {
             return transactions;
 
         } catch (Exception e) {
-            throw new RuntimeException(ErrorCode.ERR_902.getCode());
+            throw new RuntimeException(ErrorCode.ERR_930.getCode());
         }
     }
 }

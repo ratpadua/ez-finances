@@ -32,6 +32,10 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "PROFILE_ID")
+    private Profile profile;
+
+    @ManyToOne
     @JoinColumn(name = "SOURCE_ID")
     private Source source;
 
@@ -58,6 +62,14 @@ public class Transaction {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public Source getSource() {
@@ -108,8 +120,11 @@ public class Transaction {
         this.inputDate = inputDate;
     }
 
-    public static Transaction of(CreateTransaction createTransaction, Source source, Translation translation) {
+    public static Transaction of(CreateTransaction createTransaction, Profile profile, Source source,
+            Translation translation) {
+
         Transaction transaction = new Transaction();
+        transaction.setProfile(profile);
         transaction.setSource(source);
         transaction.setType(createTransaction.getType());
         transaction.setDescription(createTransaction.getDescription());

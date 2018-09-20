@@ -38,8 +38,8 @@ public class SourceControllerIntegrationTest {
 
     @Test
     public void getSourcesTestV1() throws Exception {
-        mvc.perform(get("/v1/source?profileId={profileId}&statuses={statuses}",
-                1, Status.ACTIVE.name()))
+        mvc.perform(get("/v1/source?statuses={statuses}", Status.ACTIVE.name())
+                .header("Profile-Id", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(3)))
                 .andExpect(jsonPath("$[0].name", is("Gas")))
@@ -53,14 +53,15 @@ public class SourceControllerIntegrationTest {
     public void getSourcesTestBadRequestV1() throws Exception {
         mvc.perform(get("/v1/source"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code", is("ERR_004")))
+                .andExpect(jsonPath("$.code", is("ERR_007")))
                 .andExpect(jsonPath("$.message",
-                        is("Missing request parameter. Please check the service documentation.")));
+                        is("Missing header. Please check the service documentation.")));
     }
 
     @Test
     public void searchSourceTestV1() throws Exception {
-        mvc.perform(get("/v1/source/{id}", 4))
+        mvc.perform(get("/v1/source/{id}", 4)
+                .header("Profile-Id", 2))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(4)))
                 .andExpect(jsonPath("$.name", is("Groceries")))
@@ -69,7 +70,8 @@ public class SourceControllerIntegrationTest {
 
     @Test
     public void searchSourceNotFoundTestV1() throws Exception {
-        mvc.perform(get("/v1/source/{id}", 100))
+        mvc.perform(get("/v1/source/{id}", 100)
+                .header("Profile-Id", 1))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code", is("ERR_700")))
                 .andExpect(jsonPath("$.message", is("Source not found.")));
@@ -77,11 +79,22 @@ public class SourceControllerIntegrationTest {
 
     @Test
     public void searchSourceBadRequestTestV1() throws Exception {
-        mvc.perform(get("/v1/source/{id}", "123abc"))
+        mvc.perform(get("/v1/source/{id}", "123abc")
+                .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_006")))
                 .andExpect(jsonPath("$.message",
                         is("Path parameter in wrong format. Please check the service documentation.")));
+    }
+
+    @Test
+    public void searchSourceInvalidProfileTestV1() throws Exception {
+        mvc.perform(get("/v1/source/{id}", 6)
+                .header("Profile-Id", 1))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is("ERR_710")))
+                .andExpect(jsonPath("$.message",
+                        is("This source does not belong to the provided profile.")));
     }
 
     @Test
@@ -90,6 +103,7 @@ public class SourceControllerIntegrationTest {
                 getResourceAsStream("payload/source/create-source.json"), Charset.forName("UTF-8"));
 
         mvc.perform(post("/v1/source")
+                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -104,6 +118,7 @@ public class SourceControllerIntegrationTest {
                 getResourceAsStream("payload/source/create-source-bad-request.json"), Charset.forName("UTF-8"));
 
         mvc.perform(post("/v1/source")
+                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -119,6 +134,7 @@ public class SourceControllerIntegrationTest {
                 getResourceAsStream("payload/source/update-source.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/source/{id}", 1)
+                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -134,6 +150,7 @@ public class SourceControllerIntegrationTest {
                 getResourceAsStream("payload/source/update-source.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/source/{id}", 100)
+                .header("Profile-Id", 1)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -148,6 +165,7 @@ public class SourceControllerIntegrationTest {
                 getResourceAsStream("payload/source/update-source-empty.json"), Charset.forName("UTF-8"));
 
         mvc.perform(put("/v1/source/{id}", 7)
+                .header("Profile-Id", 3)
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -159,7 +177,8 @@ public class SourceControllerIntegrationTest {
 
     @Test
     public void updateSourceBadRequestTestV1() throws Exception {
-        mvc.perform(put("/v1/source/{id}", "123abc"))
+        mvc.perform(put("/v1/source/{id}", "123abc")
+                .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_006")))
                 .andExpect(jsonPath("$.message",
