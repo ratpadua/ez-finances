@@ -1,5 +1,6 @@
 package br.com.ez.finances.web.v1.controller;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -37,7 +38,7 @@ public class TransactionController implements ITransactionController {
     }
 
     @Override
-    public Page<TransactionRepresentation> getAllTransactions(@RequestHeader("Profile-Id") Long profileId,
+    public Page<TransactionRepresentation> getTransactions(@RequestHeader("Profile-Id") Long profileId,
             Pageable pageable) {
         return mapper.toTransactionRepresentation(transactionService.getAllTransactions(profileId, pageable));
     }
@@ -69,7 +70,7 @@ public class TransactionController implements ITransactionController {
 
     @Override
     public List<TransactionRepresentation> uploadFile(@RequestHeader("Profile-Id") Long profileId,
-            @RequestParam String filePath) {
+            @RequestParam String filePath) throws FileNotFoundException {
         return mapper.fromTransactionDTO(transactionService.uploadFile(profileId, filePath));
     }
 }

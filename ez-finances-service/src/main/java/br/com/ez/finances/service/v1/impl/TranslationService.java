@@ -44,7 +44,9 @@ public class TranslationService implements ITranslationService {
     public List<Translation> getTranslations(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
 
-        return translationRepository.findByProfileIdEqualsAndStatusInOrderByDescription(profileId, statuses);
+        Profile profile = profileService.searchProfile(profileId);
+
+        return translationRepository.findByProfileEqualsAndStatusInOrderByDescription(profile, statuses);
     }
 
     @Override
@@ -61,7 +63,8 @@ public class TranslationService implements ITranslationService {
 
     @Override
     public Translation searchTranslationByDescription(Long profileId, String description) {
-        return translationRepository.findByProfileIdEqualsAndDescriptionEquals(profileId, description);
+        Profile profile = profileService.searchProfile(profileId);
+        return translationRepository.findByProfileEqualsAndDescriptionEquals(profile, description);
     }
 
     @Override

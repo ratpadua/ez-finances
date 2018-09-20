@@ -1,5 +1,6 @@
 package br.com.ez.finances.api.v1;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -37,7 +38,7 @@ public interface ITransactionController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    Page<TransactionRepresentation> getAllTransactions(@RequestHeader("Profile-Id") Long profileId, Pageable pageable);
+    Page<TransactionRepresentation> getTransactions(@RequestHeader("Profile-Id") Long profileId, Pageable pageable);
 
     /**
      * Searches a transaction by id.
@@ -95,5 +96,5 @@ public interface ITransactionController {
     @GetMapping(path = "/upload")
     @ResponseStatus(HttpStatus.OK)
     List<TransactionRepresentation> uploadFile(@RequestHeader("Profile-Id") Long profileId,
-            @RequestParam String filePath);
+            @RequestParam String filePath) throws FileNotFoundException;
 }

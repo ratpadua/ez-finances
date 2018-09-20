@@ -82,6 +82,15 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
+    public void getTranslationsProfileNotFoundTestV1() throws Exception {
+        mvc.perform(get("/v1/translation?statuses={statuses}", Status.ACTIVE.name())
+                .header("Profile-Id", 100))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("ERR_600")))
+                .andExpect(jsonPath("$.message", is("Profile not found.")));
+    }
+
+    @Test
     public void searchTranslationTestV1() throws Exception {
         mvc.perform(get("/v1/translation/{id}", 1)
                 .header("Profile-Id", 1))

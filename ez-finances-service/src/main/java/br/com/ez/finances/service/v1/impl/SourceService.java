@@ -37,7 +37,10 @@ public class SourceService implements ISourceService {
     @Override
     public List<Source> getSources(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
-        return sourceRepository.findByProfileIdEqualsAndStatusInOrderByName(profileId, statuses);
+
+        Profile profile = profileService.searchProfile(profileId);
+
+        return sourceRepository.findByProfileEqualsAndStatusInOrderByName(profile, statuses);
     }
 
     @Override

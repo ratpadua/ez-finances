@@ -1,5 +1,7 @@
 package br.com.ez.finances.web.interceptor;
 
+import java.io.FileNotFoundException;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,15 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ControllerAdvice
 @ResponseBody
 public class EZExceptionHandler {
+
+    @ExceptionHandler({FileNotFoundException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorRepresentation fileNotFoundException(FileNotFoundException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_920.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_920.getKey()),
+                ex.getMessage());
+    }
 
     @ExceptionHandler({ServletRequestBindingException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

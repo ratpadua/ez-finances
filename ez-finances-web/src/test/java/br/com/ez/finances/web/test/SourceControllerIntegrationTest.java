@@ -59,6 +59,15 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
+    public void getSourcesProfileNotFoundTestV1() throws Exception {
+        mvc.perform(get("/v1/source?statuses={statuses}", Status.ACTIVE.name())
+                .header("Profile-Id", 100))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code", is("ERR_600")))
+                .andExpect(jsonPath("$.message", is("Profile not found.")));
+    }
+
+    @Test
     public void searchSourceTestV1() throws Exception {
         mvc.perform(get("/v1/source/{id}", 4)
                 .header("Profile-Id", 2))

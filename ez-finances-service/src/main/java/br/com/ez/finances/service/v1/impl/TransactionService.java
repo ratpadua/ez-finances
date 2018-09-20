@@ -67,7 +67,8 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Page<Transaction> getAllTransactions(Long profileId, Pageable pageable) {
-        return transactionRepository.findAll(pageable);
+        Profile profile = profileService.searchProfile(profileId);
+        return transactionRepository.findByProfileEquals(profile, pageable);
     }
 
     @Override
@@ -141,15 +142,9 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public List<TransactionDTO> uploadFile(Long profileId, String filePath) {
-        try {
-            FileInputStream file = new FileInputStream(new File(filePath));
-
-            return readOFXFile(profileId, file);
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(ErrorCode.ERR_920.getCode());
-        }
+    public List<TransactionDTO> uploadFile(Long profileId, String filePath) throws FileNotFoundException {
+        FileInputStream file = new FileInputStream(new File(filePath));
+        return readOFXFile(profileId, file);
     }
 
     private List<TransactionDTO> readOFXFile(Long profileId, InputStream file) {

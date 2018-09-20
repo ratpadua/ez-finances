@@ -1,5 +1,6 @@
 package br.com.ez.finances.service.v1;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -67,5 +68,5 @@ public interface ITransactionService {
      * @param filePath  The file location.
      * @return A list of transactions.
      */
-    List<TransactionDTO> uploadFile(Long profileId, String filePath);
+    List<TransactionDTO> uploadFile(Long profileId, String filePath) throws FileNotFoundException;
 }
