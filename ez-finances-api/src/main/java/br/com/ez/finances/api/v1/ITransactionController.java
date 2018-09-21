@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import br.com.ez.finances.api.v1.representation.transaction.TransactionRepresentation;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
+import br.com.ez.finances.domain.form.transaction.UploadTransactions;
 
 /**
  * Transaction related API controller.
@@ -97,4 +98,16 @@ public interface ITransactionController {
     @ResponseStatus(HttpStatus.OK)
     List<TransactionRepresentation> uploadFile(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam String filePath) throws FileNotFoundException;
+
+    /**
+     * Creates transactions using the values provided on the request body.
+     *
+     * @param profileId          Mandatory header parameter with the profile id.
+     * @param uploadTransactions Mandatory valid json array object with transaction information.
+     * @return The new transaction created.
+     */
+    @PostMapping(path = "/upload")
+    @ResponseStatus(HttpStatus.CREATED)
+    List<TransactionRepresentation> uploadTransactions(@RequestHeader("Profile-Id") Long profileId,
+            @RequestBody @Valid UploadTransactions uploadTransactions);
 }

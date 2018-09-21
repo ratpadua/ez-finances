@@ -34,6 +34,8 @@ import br.com.ez.finances.domain.entity.Translation;
 import br.com.ez.finances.domain.error.ErrorCode;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
+import br.com.ez.finances.domain.form.transaction.UploadTransactions;
+import br.com.ez.finances.infrastructure.exception.FileReadException;
 import br.com.ez.finances.infrastructure.exception.InvalidProfileException;
 import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.infrastructure.repository.TransactionRepository;
@@ -133,6 +135,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    @Transactional
     public void deleteTransaction(Long profileId, Long id) {
         Transaction transaction = searchTransaction(profileId, id);
 
@@ -175,7 +178,18 @@ public class TransactionService implements ITransactionService {
             return transactions;
 
         } catch (Exception e) {
-            throw new RuntimeException(ErrorCode.ERR_930.getCode());
+            throw new FileReadException(ErrorCode.ERR_930);
         }
+    }
+
+    @Override
+    @Transactional
+    public List<Transaction> uploadTransactions(Long profileId, UploadTransactions uploadTransactions) {
+        List<Transaction> createdTransactions = new ArrayList<>();
+
+        uploadTransactions.getCreateTransactions().forEach(
+                createTransaction -> createdTransactions.add(createTransaction(profileId, createTransaction)));
+
+        return createdTransactions;
     }
 }

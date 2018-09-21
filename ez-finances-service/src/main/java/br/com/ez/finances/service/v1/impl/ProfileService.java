@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +47,13 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
+    @Transactional
     public Profile createProfile(CreateProfile createProfile) {
         return profileRepository.save(Profile.of(createProfile));
     }
 
     @Override
+    @Transactional
     public Profile updateProfile(Long id, UpdateProfile updateProfile) {
         Profile profile = searchProfile(id);
 
@@ -61,6 +65,7 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
+    @Transactional
     public Profile addBalance(Long id, BigDecimal balance) {
         Profile profile = searchProfile(id);
         profile.setBalance(profile.getBalance().add(balance));

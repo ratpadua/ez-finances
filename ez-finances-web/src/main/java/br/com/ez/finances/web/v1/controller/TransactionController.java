@@ -18,6 +18,7 @@ import br.com.ez.finances.api.v1.ITransactionController;
 import br.com.ez.finances.api.v1.representation.transaction.TransactionRepresentation;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
+import br.com.ez.finances.domain.form.transaction.UploadTransactions;
 import br.com.ez.finances.service.v1.ITransactionService;
 import br.com.ez.finances.web.v1.mapper.TransactionMapper;
 
@@ -72,5 +73,11 @@ public class TransactionController implements ITransactionController {
     public List<TransactionRepresentation> uploadFile(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam String filePath) throws FileNotFoundException {
         return mapper.fromTransactionDTO(transactionService.uploadFile(profileId, filePath));
+    }
+
+    @Override
+    public List<TransactionRepresentation> uploadTransactions(@RequestHeader("Profile-Id") Long profileId,
+            @RequestBody @Valid UploadTransactions uploadTransactions) {
+        return mapper.toTransactionRepresentation(transactionService.uploadTransactions(profileId, uploadTransactions));
     }
 }

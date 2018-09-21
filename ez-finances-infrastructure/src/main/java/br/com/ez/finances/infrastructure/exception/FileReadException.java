@@ -3,13 +3,13 @@ package br.com.ez.finances.infrastructure.exception;
 import br.com.ez.finances.domain.error.ErrorCode;
 
 /**
- * Invalid profile exception for runtime exceptions.
+ * File read exception for runtime exceptions.
  */
-public class InvalidProfileException extends RuntimeException {
+public class FileReadException extends RuntimeException {
 
     private ErrorCode errorCode;
 
-    public InvalidProfileException(ErrorCode errorCode) {
+    public FileReadException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 

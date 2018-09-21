@@ -17,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import br.com.ez.finances.api.v1.representation.error.ErrorRepresentation;
 import br.com.ez.finances.domain.error.ErrorCode;
+import br.com.ez.finances.infrastructure.exception.FileReadException;
 import br.com.ez.finances.infrastructure.exception.InvalidProfileException;
 import br.com.ez.finances.infrastructure.exception.NotFoundException;
 import br.com.ez.finances.web.config.ResourceBundle;
@@ -28,13 +29,12 @@ import br.com.ez.finances.web.config.ResourceBundle;
 @ResponseBody
 public class EZExceptionHandler {
 
-    @ExceptionHandler({FileNotFoundException.class})
+    @ExceptionHandler({FileReadException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorRepresentation fileNotFoundException(FileNotFoundException ex) {
-        return ErrorRepresentation.of(ErrorCode.ERR_920.getCode(),
-                ResourceBundle.getMessage(ErrorCode.ERR_920.getKey()),
-                ex.getMessage());
+    public ErrorRepresentation fileReadException(FileReadException ex) {
+        return ErrorRepresentation.of(ex.getErrorCode().getCode(),
+                ResourceBundle.getMessage(ex.getErrorCode().getKey()),null);
     }
 
     @ExceptionHandler({ServletRequestBindingException.class})
@@ -78,6 +78,15 @@ public class EZExceptionHandler {
     public ErrorRepresentation missingServletRequestParameterException(MissingServletRequestParameterException ex) {
         return ErrorRepresentation.of(ErrorCode.ERR_004.getCode(),
                 ResourceBundle.getMessage(ErrorCode.ERR_004.getKey()),
+                ex.getMessage());
+    }
+
+    @ExceptionHandler({FileNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorRepresentation fileNotFoundException(FileNotFoundException ex) {
+        return ErrorRepresentation.of(ErrorCode.ERR_920.getCode(),
+                ResourceBundle.getMessage(ErrorCode.ERR_920.getKey()),
                 ex.getMessage());
     }
 

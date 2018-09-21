@@ -3,6 +3,8 @@ package br.com.ez.finances.service.v1.impl;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,12 +58,14 @@ public class SourceService implements ISourceService {
     }
 
     @Override
+    @Transactional
     public Source createSource(Long profileId, CreateSource createSource) {
         Profile profile = profileService.searchProfile(profileId);
         return sourceRepository.save(Source.of(createSource, profile));
     }
 
     @Override
+    @Transactional
     public Source updateSource(Long profileId, Long id, UpdateSource updateSource) {
         Source source = searchSource(profileId, id);
 

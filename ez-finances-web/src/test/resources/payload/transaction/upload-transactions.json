@@ -1,0 +1,25 @@
+{
+  "createTransactions": [
+    {
+      "sourceId": 1,
+      "type": "VARIABLE",
+      "description": "ULTMKT LMT",
+      "balance": -31.50,
+      "inputDate": "2018-09-19T18:55:34.534"
+    },
+    {
+      "sourceId": 1,
+      "type": "VARIABLE",
+      "description": "TIDE 24HRS",
+      "balance": -56.33,
+      "inputDate": "2018-09-19T19:55:34.534"
+    },
+    {
+      "sourceId": 3,
+      "type": "FIXED",
+      "description": "GAS PETROL MARTIN",
+      "balance": -100.77,
+      "inputDate": "2018-09-19T20:55:34.534"
+    }
+  ]
+}

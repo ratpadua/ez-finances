@@ -10,6 +10,7 @@ import br.com.ez.finances.domain.dto.TransactionDTO;
 import br.com.ez.finances.domain.entity.Transaction;
 import br.com.ez.finances.domain.form.transaction.CreateTransaction;
 import br.com.ez.finances.domain.form.transaction.UpdateTransaction;
+import br.com.ez.finances.domain.form.transaction.UploadTransactions;
 
 /**
  * Interface containing Transaction related operations.
@@ -69,4 +70,13 @@ public interface ITransactionService {
      * @return A list of transactions.
      */
     List<TransactionDTO> uploadFile(Long profileId, String filePath) throws FileNotFoundException;
+
+    /**
+     * Creates transactions using the values provided on the form object.
+     *
+     * @param profileId Mandatory variable with the profile id.
+     * @param uploadTransactions Mandatory valid object with transactions information.
+     * @return Created transactions.
+     */
+    List<Transaction> uploadTransactions(Long profileId, UploadTransactions uploadTransactions);
 }
