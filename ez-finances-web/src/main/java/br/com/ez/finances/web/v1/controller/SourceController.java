@@ -36,14 +36,14 @@ public class SourceController implements ISourceController {
     }
 
     @Override
-    public List<SourceRepresentation> getSources(@RequestHeader("Profile-Id") Long profileId,
+    public List<SourceRepresentation> searchSources(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses) {
-        return mapper.toSourceRepresentation(sourceService.getSources(profileId, statuses));
+        return mapper.toSourceRepresentation(sourceService.searchSources(profileId, statuses));
     }
 
     @Override
-    public SourceRepresentation searchSource(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id) {
-        return mapper.toSourceRepresentation(sourceService.searchSource(profileId, id));
+    public SourceRepresentation getSource(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id) {
+        return mapper.toSourceRepresentation(sourceService.getSource(profileId, id));
     }
 
     @Override

@@ -39,7 +39,7 @@ public class TransactionControllerIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    public void getTransactionsTestV1() throws Exception {
+    public void searchTransactionsTestV1() throws Exception {
         mvc.perform(get("/v1/transaction?sort={sort}", "inputDate,DESC")
                 .header("Profile-Id", 1))
                 .andExpect(status().isOk())
@@ -72,7 +72,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void getTransactionsTestBadRequestV1() throws Exception {
+    public void searchTransactionsTestBadRequestV1() throws Exception {
         mvc.perform(get("/v1/transaction"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_007")))
@@ -81,7 +81,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void getTransactionsProfileNotFoundTestV1() throws Exception {
+    public void searchTransactionsProfileNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/transaction?statuses={statuses}", Status.ACTIVE.name())
                 .header("Profile-Id", 100))
                 .andExpect(status().isNotFound())
@@ -90,7 +90,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void searchTransactionTestV1() throws Exception {
+    public void getTransactionTestV1() throws Exception {
         mvc.perform(get("/v1/transaction/{id}", 1)
                 .header("Profile-Id", 1))
                 .andExpect(status().isOk())
@@ -110,7 +110,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void searchTransactionNotFoundTestV1() throws Exception {
+    public void getTransactionNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/transaction/{id}", 100)
                 .header("Profile-Id", 1))
                 .andExpect(status().isNotFound())
@@ -119,7 +119,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void searchTransactionBadRequestTestV1() throws Exception {
+    public void getTransactionBadRequestTestV1() throws Exception {
         mvc.perform(get("/v1/transaction/{id}", "123abc")
                 .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
@@ -129,7 +129,7 @@ public class TransactionControllerIntegrationTest {
     }
 
     @Test
-    public void searchTransactionInvalidProfileTestV1() throws Exception {
+    public void getTransactionInvalidProfileTestV1() throws Exception {
         mvc.perform(get("/v1/transaction/{id}", 1)
                 .header("Profile-Id", 2))
                 .andExpect(status().isBadRequest())

@@ -39,15 +39,15 @@ public class TransactionController implements ITransactionController {
     }
 
     @Override
-    public Page<TransactionRepresentation> getTransactions(@RequestHeader("Profile-Id") Long profileId,
+    public Page<TransactionRepresentation> searchTransactions(@RequestHeader("Profile-Id") Long profileId,
             Pageable pageable) {
-        return mapper.toTransactionRepresentation(transactionService.getAllTransactions(profileId, pageable));
+        return mapper.toTransactionRepresentation(transactionService.searchTransactions(profileId, pageable));
     }
 
     @Override
-    public TransactionRepresentation searchTransaction(@RequestHeader("Profile-Id") Long profileId,
+    public TransactionRepresentation getTransaction(@RequestHeader("Profile-Id") Long profileId,
             @PathVariable Long id) {
-        return mapper.toTransactionRepresentation(transactionService.searchTransaction(profileId, id));
+        return mapper.toTransactionRepresentation(transactionService.getTransaction(profileId, id));
     }
 
     @Override

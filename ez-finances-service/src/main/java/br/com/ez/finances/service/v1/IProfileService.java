@@ -19,7 +19,7 @@ public interface IProfileService {
      * @param statuses Optional parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the profiles found.
      */
-    List<Profile> getProfiles(Status... statuses);
+    List<Profile> searchProfiles(Status... statuses);
 
     /**
      * Searches the profile with the provided id.
@@ -27,7 +27,7 @@ public interface IProfileService {
      * @param id Mandatory variable with the id of the profile.
      * @return The profile found with the provided id.
      */
-    Profile searchProfile(Long id);
+    Profile getProfile(Long id);
 
     /**
      * Creates a new profile using the values provided on the form object.

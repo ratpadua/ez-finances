@@ -36,15 +36,15 @@ public class TranslationController implements ITranslationController {
     }
 
     @Override
-    public List<TranslationRepresentation> getTranslations(@RequestHeader("Profile-Id") Long profileId,
+    public List<TranslationRepresentation> searchTranslations(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses) {
-        return mapper.toTranslationRepresentation(translationService.getTranslations(profileId, statuses));
+        return mapper.toTranslationRepresentation(translationService.searchTranslations(profileId, statuses));
     }
 
     @Override
-    public TranslationRepresentation searchTranslation(@RequestHeader("Profile-Id") Long profileId,
+    public TranslationRepresentation getTranslation(@RequestHeader("Profile-Id") Long profileId,
             @PathVariable Long id) {
-        return mapper.toTranslationRepresentation(translationService.searchTranslation(profileId, id));
+        return mapper.toTranslationRepresentation(translationService.getTranslation(profileId, id));
     }
 
     @Override

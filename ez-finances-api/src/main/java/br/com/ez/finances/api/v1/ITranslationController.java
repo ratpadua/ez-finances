@@ -35,7 +35,7 @@ public interface ITranslationController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<TranslationRepresentation> getTranslations(@RequestHeader("Profile-Id") Long profileId,
+    List<TranslationRepresentation> searchTranslations(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses);
 
     /**
@@ -47,7 +47,7 @@ public interface ITranslationController {
      */
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    TranslationRepresentation searchTranslation(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
+    TranslationRepresentation getTranslation(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
 
     /**
      * Searches the translation of a description.

@@ -37,7 +37,7 @@ public class SourceControllerIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    public void getSourcesTestV1() throws Exception {
+    public void searchSourcesTestV1() throws Exception {
         mvc.perform(get("/v1/source?statuses={statuses}", Status.ACTIVE.name())
                 .header("Profile-Id", 1))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void getSourcesTestBadRequestV1() throws Exception {
+    public void searchSourcesTestBadRequestV1() throws Exception {
         mvc.perform(get("/v1/source"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_007")))
@@ -59,7 +59,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void getSourcesProfileNotFoundTestV1() throws Exception {
+    public void searchSourcesProfileNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/source?statuses={statuses}", Status.ACTIVE.name())
                 .header("Profile-Id", 100))
                 .andExpect(status().isNotFound())
@@ -68,7 +68,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void searchSourceTestV1() throws Exception {
+    public void getSourceTestV1() throws Exception {
         mvc.perform(get("/v1/source/{id}", 4)
                 .header("Profile-Id", 2))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void searchSourceNotFoundTestV1() throws Exception {
+    public void getSourceNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/source/{id}", 100)
                 .header("Profile-Id", 1))
                 .andExpect(status().isNotFound())
@@ -87,7 +87,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void searchSourceBadRequestTestV1() throws Exception {
+    public void getSourceBadRequestTestV1() throws Exception {
         mvc.perform(get("/v1/source/{id}", "123abc")
                 .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
@@ -97,7 +97,7 @@ public class SourceControllerIntegrationTest {
     }
 
     @Test
-    public void searchSourceInvalidProfileTestV1() throws Exception {
+    public void getSourceInvalidProfileTestV1() throws Exception {
         mvc.perform(get("/v1/source/{id}", 6)
                 .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())

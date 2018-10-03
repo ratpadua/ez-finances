@@ -19,7 +19,7 @@ public interface ITranslationService {
      * @param statuses  Optional parameter containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the translations found.
      */
-    List<Translation> getTranslations(Long profileId, Status... statuses);
+    List<Translation> searchTranslations(Long profileId, Status... statuses);
 
     /**
      * Searches the translation of a description.
@@ -28,7 +28,7 @@ public interface ITranslationService {
      * @param id        Mandatory variable with the id of the translation.
      * @return The translation found.
      */
-    Translation searchTranslation(Long profileId, Long id);
+    Translation getTranslation(Long profileId, Long id);
 
     /**
      * Searches the translation of a description.

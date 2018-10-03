@@ -24,7 +24,7 @@ public interface ITransactionService {
      * @param pageable  Optional variable pagination information.
      * @return A page with all the transactions found.
      */
-    Page<Transaction> getAllTransactions(Long profileId, Pageable pageable);
+    Page<Transaction> searchTransactions(Long profileId, Pageable pageable);
 
     /**
      * Searches the translation of a description.
@@ -33,7 +33,7 @@ public interface ITransactionService {
      * @param id        Mandatory variable with the id of the transaction.
      * @return The transaction found.
      */
-    Transaction searchTransaction(Long profileId, Long id);
+    Transaction getTransaction(Long profileId, Long id);
 
     /**
      * Creates a new transaction using the values provided on the form object.

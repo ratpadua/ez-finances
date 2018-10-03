@@ -19,7 +19,7 @@ public interface ISourceService {
      * @param statuses  Optional variable containing one or more valid statuses (ACTIVE, INACTIVE).
      * @return A list with all the sources found.
      */
-    List<Source> getSources(Long profileId, Status... statuses);
+    List<Source> searchSources(Long profileId, Status... statuses);
 
     /**
      * Searches the source with the provided id.
@@ -28,7 +28,7 @@ public interface ISourceService {
      * @param id        Mandatory variable with the id of the source.
      * @return The source found with the provided id.
      */
-    Source searchSource(Long profileId, Long id);
+    Source getSource(Long profileId, Long id);
 
     /**
      * Creates a new source using the values provided on the form object.

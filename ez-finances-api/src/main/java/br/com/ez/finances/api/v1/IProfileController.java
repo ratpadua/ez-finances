@@ -33,7 +33,7 @@ public interface IProfileController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<ProfileRepresentation> getProfiles(@RequestParam(required = false) Status... statuses);
+    List<ProfileRepresentation> searchProfiles(@RequestParam(required = false) Status... statuses);
 
     /**
      * Searches the profile with the provided id.
@@ -43,7 +43,7 @@ public interface IProfileController {
      */
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    ProfileRepresentation searchProfile(@PathVariable Long id);
+    ProfileRepresentation getProfile(@PathVariable Long id);
 
     /**
      * Creates a new profile using the values provided on the request body.

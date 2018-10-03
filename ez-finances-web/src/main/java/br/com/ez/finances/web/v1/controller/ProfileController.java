@@ -35,13 +35,13 @@ public class ProfileController implements IProfileController {
     }
 
     @Override
-    public List<ProfileRepresentation> getProfiles(@RequestParam(required = false) Status... statuses) {
-        return mapper.toProfileRepresentation(profileService.getProfiles(statuses));
+    public List<ProfileRepresentation> searchProfiles(@RequestParam(required = false) Status... statuses) {
+        return mapper.toProfileRepresentation(profileService.searchProfiles(statuses));
     }
 
     @Override
-    public ProfileRepresentation searchProfile(@PathVariable Long id) {
-        return mapper.toProfileRepresentation(profileService.searchProfile(id));
+    public ProfileRepresentation getProfile(@PathVariable Long id) {
+        return mapper.toProfileRepresentation(profileService.getProfile(id));
     }
 
     @Override

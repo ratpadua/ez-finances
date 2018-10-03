@@ -35,7 +35,7 @@ public interface ISourceController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<SourceRepresentation> getSources(@RequestHeader("Profile-Id") Long profileId,
+    List<SourceRepresentation> searchSources(@RequestHeader("Profile-Id") Long profileId,
             @RequestParam(required = false) Status... statuses);
 
     /**
@@ -47,7 +47,7 @@ public interface ISourceController {
      */
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    SourceRepresentation searchSource(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
+    SourceRepresentation getSource(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
 
     /**
      * Creates a new source using the values provided on the request body.

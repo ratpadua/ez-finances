@@ -37,7 +37,7 @@ public class ProfileControllerIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    public void getAllProfilesTestV1() throws Exception {
+    public void searchProfilesTestV1() throws Exception {
         mvc.perform(get("/v1/profile"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -55,7 +55,7 @@ public class ProfileControllerIntegrationTest {
     }
 
     @Test
-    public void getFilteredProfilesTestV1() throws Exception {
+    public void searchFilteredProfilesTestV1() throws Exception {
         mvc.perform(get("/v1/profile?statuses={status}", "ACTIVE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -69,7 +69,7 @@ public class ProfileControllerIntegrationTest {
     }
 
     @Test
-    public void searchProfileTestV1() throws Exception {
+    public void getProfileTestV1() throws Exception {
         mvc.perform(get("/v1/profile/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
@@ -87,7 +87,7 @@ public class ProfileControllerIntegrationTest {
     }
 
     @Test
-    public void searchProfileBadRequestTestV1() throws Exception {
+    public void getProfileBadRequestTestV1() throws Exception {
         mvc.perform(get("/v1/profile/{id}", "123abc"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_006")))

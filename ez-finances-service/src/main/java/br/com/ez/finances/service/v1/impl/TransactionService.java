@@ -68,13 +68,13 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
-    public Page<Transaction> getAllTransactions(Long profileId, Pageable pageable) {
-        Profile profile = profileService.searchProfile(profileId);
+    public Page<Transaction> searchTransactions(Long profileId, Pageable pageable) {
+        Profile profile = profileService.getProfile(profileId);
         return transactionRepository.findByProfileEquals(profile, pageable);
     }
 
     @Override
-    public Transaction searchTransaction(Long profileId, Long id) {
+    public Transaction getTransaction(Long profileId, Long id) {
         Optional<Transaction> optTransaction = transactionRepository.findById(id);
 
         if (!optTransaction.isPresent()) throw new NotFoundException(ErrorCode.ERR_900);
@@ -88,8 +88,8 @@ public class TransactionService implements ITransactionService {
     @Override
     @Transactional
     public Transaction createTransaction(Long profileId, CreateTransaction createTransaction) {
-        Profile profile = profileService.searchProfile(profileId);
-        Source source = sourceService.searchSource(profileId, createTransaction.getSourceId());
+        Profile profile = profileService.getProfile(profileId);
+        Source source = sourceService.getSource(profileId, createTransaction.getSourceId());
         Translation translation =
                 translationService.searchTranslationByDescription(profileId, createTransaction.getDescription());
 
@@ -103,10 +103,10 @@ public class TransactionService implements ITransactionService {
     @Override
     @Transactional
     public Transaction updateTransaction(Long profileId, Long id, UpdateTransaction updateTransaction) {
-        Transaction transaction = searchTransaction(profileId, id);
+        Transaction transaction = getTransaction(profileId, id);
 
         updateTransaction.getSourceId().ifPresent(sourceId -> {
-            Source source = sourceService.searchSource(profileId, sourceId);
+            Source source = sourceService.getSource(profileId, sourceId);
             transaction.setSource(source);
         });
 
@@ -137,7 +137,7 @@ public class TransactionService implements ITransactionService {
     @Override
     @Transactional
     public void deleteTransaction(Long profileId, Long id) {
-        Transaction transaction = searchTransaction(profileId, id);
+        Transaction transaction = getTransaction(profileId, id);
 
         profileService.addBalance(profileId, transaction.getBalance().negate());
 

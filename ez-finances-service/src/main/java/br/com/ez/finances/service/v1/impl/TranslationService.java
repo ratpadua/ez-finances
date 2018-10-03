@@ -43,16 +43,16 @@ public class TranslationService implements ITranslationService {
     }
 
     @Override
-    public List<Translation> getTranslations(Long profileId, Status... statuses) {
+    public List<Translation> searchTranslations(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
 
-        Profile profile = profileService.searchProfile(profileId);
+        Profile profile = profileService.getProfile(profileId);
 
         return translationRepository.findByProfileEqualsAndStatusInOrderByDescription(profile, statuses);
     }
 
     @Override
-    public Translation searchTranslation(Long profileId, Long id) {
+    public Translation getTranslation(Long profileId, Long id) {
         Optional<Translation> optTranslation = translationRepository.findById(id);
 
         if (!optTranslation.isPresent()) throw new NotFoundException(ErrorCode.ERR_800);
@@ -65,7 +65,7 @@ public class TranslationService implements ITranslationService {
 
     @Override
     public Translation searchTranslationByDescription(Long profileId, String description) {
-        Profile profile = profileService.searchProfile(profileId);
+        Profile profile = profileService.getProfile(profileId);
         return translationRepository.findByProfileEqualsAndDescriptionEquals(profile, description);
     }
 
@@ -74,10 +74,10 @@ public class TranslationService implements ITranslationService {
     public Translation createTranslation(Long profileId, CreateTranslation createTranslation) {
         Translation translation;
 
-        Profile profile = profileService.searchProfile(profileId);
+        Profile profile = profileService.getProfile(profileId);
 
         if (createTranslation.getSourceId().isPresent()) {
-            Source source = sourceService.searchSource(profileId, createTranslation.getSourceId().get());
+            Source source = sourceService.getSource(profileId, createTranslation.getSourceId().get());
             translation = Translation.of(createTranslation, profile, source);
         } else {
             translation = Translation.of(createTranslation, profile, null);
@@ -89,12 +89,12 @@ public class TranslationService implements ITranslationService {
     @Override
     @Transactional
     public Translation updateTranslation(Long profileId, Long id, UpdateTranslation updateTranslation) {
-        Translation translation = searchTranslation(profileId, id);
+        Translation translation = getTranslation(profileId, id);
 
         updateTranslation.getToDescription().ifPresent(translation::setToDescription);
         updateTranslation.getStatus().ifPresent(translation::setStatus);
         updateTranslation.getSourceId().ifPresent(sourceId -> {
-            Source source = sourceService.searchSource(profileId, sourceId);
+            Source source = sourceService.getSource(profileId, sourceId);
             translation.setSource(source);
         });
 

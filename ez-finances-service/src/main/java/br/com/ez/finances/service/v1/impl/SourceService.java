@@ -37,16 +37,16 @@ public class SourceService implements ISourceService {
     }
 
     @Override
-    public List<Source> getSources(Long profileId, Status... statuses) {
+    public List<Source> searchSources(Long profileId, Status... statuses) {
         statuses = Status.validateStatuses(statuses);
 
-        Profile profile = profileService.searchProfile(profileId);
+        Profile profile = profileService.getProfile(profileId);
 
         return sourceRepository.findByProfileEqualsAndStatusInOrderByName(profile, statuses);
     }
 
     @Override
-    public Source searchSource(Long profileId, Long id) {
+    public Source getSource(Long profileId, Long id) {
         Optional<Source> optSource = sourceRepository.findById(id);
 
         if (!optSource.isPresent()) throw new NotFoundException(ErrorCode.ERR_700);
@@ -60,14 +60,14 @@ public class SourceService implements ISourceService {
     @Override
     @Transactional
     public Source createSource(Long profileId, CreateSource createSource) {
-        Profile profile = profileService.searchProfile(profileId);
+        Profile profile = profileService.getProfile(profileId);
         return sourceRepository.save(Source.of(createSource, profile));
     }
 
     @Override
     @Transactional
     public Source updateSource(Long profileId, Long id, UpdateSource updateSource) {
-        Source source = searchSource(profileId, id);
+        Source source = getSource(profileId, id);
 
         updateSource.getName().ifPresent(source::setName);
         updateSource.getStatus().ifPresent(source::setStatus);

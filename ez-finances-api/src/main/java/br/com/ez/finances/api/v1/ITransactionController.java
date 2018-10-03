@@ -39,7 +39,7 @@ public interface ITransactionController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    Page<TransactionRepresentation> getTransactions(@RequestHeader("Profile-Id") Long profileId, Pageable pageable);
+    Page<TransactionRepresentation> searchTransactions(@RequestHeader("Profile-Id") Long profileId, Pageable pageable);
 
     /**
      * Searches a transaction by id.
@@ -50,7 +50,7 @@ public interface ITransactionController {
      */
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    TransactionRepresentation searchTransaction(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
+    TransactionRepresentation getTransaction(@RequestHeader("Profile-Id") Long profileId, @PathVariable Long id);
 
     /**
      * Creates a new transaction using the values provided on the request body.

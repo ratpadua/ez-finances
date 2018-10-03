@@ -32,13 +32,13 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public List<Profile> getProfiles(Status... statuses) {
+    public List<Profile> searchProfiles(Status... statuses) {
         statuses = Status.validateStatuses(statuses);
         return profileRepository.findByStatusInOrderByName(statuses);
     }
 
     @Override
-    public Profile searchProfile(Long id) {
+    public Profile getProfile(Long id) {
         Optional<Profile> optProfile = profileRepository.findById(id);
 
         if(!optProfile.isPresent()) throw new NotFoundException(ErrorCode.ERR_600);
@@ -55,7 +55,7 @@ public class ProfileService implements IProfileService {
     @Override
     @Transactional
     public Profile updateProfile(Long id, UpdateProfile updateProfile) {
-        Profile profile = searchProfile(id);
+        Profile profile = getProfile(id);
 
         updateProfile.getName().ifPresent(profile::setName);
         updateProfile.getBalance().ifPresent(profile::setBalance);
@@ -67,7 +67,7 @@ public class ProfileService implements IProfileService {
     @Override
     @Transactional
     public Profile addBalance(Long id, BigDecimal balance) {
-        Profile profile = searchProfile(id);
+        Profile profile = getProfile(id);
         profile.setBalance(profile.getBalance().add(balance));
         return profileRepository.save(profile);
     }

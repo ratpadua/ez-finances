@@ -38,7 +38,7 @@ public class TranslationControllerIntegrationTest {
     private MockMvc mvc;
 
     @Test
-    public void getTranslationsTestV1() throws Exception {
+    public void searchTranslationsTestV1() throws Exception {
         mvc.perform(get("/v1/translation?statuses={statuses}", Status.ACTIVE.name())
                 .header("Profile-Id", 1))
                 .andExpect(status().isOk())
@@ -73,7 +73,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void getTranslationsTestBadRequestV1() throws Exception {
+    public void searchTranslationsTestBadRequestV1() throws Exception {
         mvc.perform(get("/v1/translation"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("ERR_007")))
@@ -82,7 +82,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void getTranslationsProfileNotFoundTestV1() throws Exception {
+    public void searchTranslationsProfileNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/translation?statuses={statuses}", Status.ACTIVE.name())
                 .header("Profile-Id", 100))
                 .andExpect(status().isNotFound())
@@ -91,7 +91,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationTestV1() throws Exception {
+    public void getTranslationTestV1() throws Exception {
         mvc.perform(get("/v1/translation/{id}", 1)
                 .header("Profile-Id", 1))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationNotFoundTestV1() throws Exception {
+    public void getTranslationNotFoundTestV1() throws Exception {
         mvc.perform(get("/v1/translation/{id}", 100)
                 .header("Profile-Id", 1))
                 .andExpect(status().isNotFound())
@@ -115,7 +115,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationBadRequestTestV1() throws Exception {
+    public void getTranslationBadRequestTestV1() throws Exception {
         mvc.perform(get("/v1/translation/{id}", "123abc")
                 .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
@@ -125,7 +125,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationInvalidProfileTestV1() throws Exception {
+    public void getTranslationInvalidProfileTestV1() throws Exception {
         mvc.perform(get("/v1/translation/{id}", 1)
                 .header("Profile-Id", 2))
                 .andExpect(status().isBadRequest())
@@ -135,7 +135,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationByDescriptionTestV1() throws Exception {
+    public void getTranslationByDescriptionTestV1() throws Exception {
         mvc.perform(get("/v1/translation/search?description={description}", "ELT CMP")
                 .header("Profile-Id", 2))
                 .andExpect(status().isOk())
@@ -150,7 +150,7 @@ public class TranslationControllerIntegrationTest {
     }
 
     @Test
-    public void searchTranslationByDescriptionBadRequestTestV1() throws Exception {
+    public void getTranslationByDescriptionBadRequestTestV1() throws Exception {
         mvc.perform(get("/v1/translation/search")
                 .header("Profile-Id", 1))
                 .andExpect(status().isBadRequest())
